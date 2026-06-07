@@ -325,6 +325,8 @@ function setupEventListeners() {
         AppState.currentDate = e.target.value;
         renderAttendanceRegistry();
     });
+    document.getElementById("attendanceFilterCourse").addEventListener("change", renderAttendanceRegistry);
+    document.getElementById("attendanceFilterSemester").addEventListener("change", renderAttendanceRegistry);
     document.getElementById("btnMarkAllPresent").addEventListener("click", () => bulkMarkAttendance("Present"));
     document.getElementById("btnMarkAllAbsent").addEventListener("click", () => bulkMarkAttendance("Absent"));
     document.getElementById("btnSaveAttendance").addEventListener("click", saveAttendanceRegistry);
@@ -916,8 +918,59 @@ function renderAttendanceRegistry() {
         return;
     }
     
+    const courseVal = document.getElementById("attendanceFilterCourse").value;
+    const semVal = document.getElementById("attendanceFilterSemester").value;
+    
+    if (!courseVal || !semVal) {
+        tableBody.innerHTML = `
+            <tr class="empty-table-row">
+                <td colspan="5">
+                    <div class="empty-state-wrapper">
+                        <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                        </svg>
+                        <span class="empty-state-text">No Class Selected</span>
+                        <span class="empty-state-sub">Please select both Course and Semester to load the student registry.</span>
+                    </div>
+                </td>
+            </tr>
+        `;
+        statusBadge.textContent = "Select Class";
+        statusBadge.className = "badge badge-warning";
+        countText.textContent = "0 / 0 marked";
+        return;
+    }
+    
+    const filteredStudents = AppState.students.filter(student => {
+        return student.course === courseVal && student.semester === semVal;
+    });
+    
+    if (filteredStudents.length === 0) {
+        tableBody.innerHTML = `
+            <tr class="empty-table-row">
+                <td colspan="5">
+                    <div class="empty-state-wrapper">
+                        <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <span class="empty-state-text">No Students Enrolled</span>
+                        <span class="empty-state-sub">No students are registered in ${courseVal} Sem ${semVal}.</span>
+                    </div>
+                </td>
+            </tr>
+        `;
+        statusBadge.textContent = "No Students";
+        statusBadge.className = "badge badge-red";
+        countText.textContent = "0 / 0 marked";
+        return;
+    }
+    
     const dateLogs = AppState.attendance[AppState.currentDate];
-    const isSaved = !!dateLogs;
+    // Check if logs exist for all students in this class
+    const isSaved = dateLogs && filteredStudents.every(student => dateLogs[student.rollNumber] !== undefined);
     
     if (isSaved) {
         statusBadge.textContent = "Registry Saved";
@@ -929,12 +982,12 @@ function renderAttendanceRegistry() {
     }
     
     // Sort students alphabetically
-    const sortedStudents = [...AppState.students].sort((a, b) => a.fullName.localeCompare(b.fullName));
+    const sortedStudents = [...filteredStudents].sort((a, b) => a.fullName.localeCompare(b.fullName));
     
     sortedStudents.forEach(student => {
         // If saved, load. If not saved, default to "Present" for faster marking workflow
         let status = "Present";
-        if (isSaved && dateLogs[student.rollNumber]) {
+        if (dateLogs && dateLogs[student.rollNumber]) {
             status = dateLogs[student.rollNumber];
         }
         
@@ -987,10 +1040,22 @@ function renderAttendanceRegistry() {
 }
 
 function updateAttendanceCountText() {
-    const total = AppState.students.length;
+    const courseVal = document.getElementById("attendanceFilterCourse").value;
+    const semVal = document.getElementById("attendanceFilterSemester").value;
+    
+    if (!courseVal || !semVal) {
+        document.getElementById("attendanceSubmitCount").textContent = "0 / 0 marked Present";
+        return;
+    }
+    
+    const displayedStudents = AppState.students.filter(student => {
+        return student.course === courseVal && student.semester === semVal;
+    });
+    
+    const total = displayedStudents.length;
     let present = 0;
     
-    AppState.students.forEach(student => {
+    displayedStudents.forEach(student => {
         const radPresent = document.getElementById(`pres_${student.rollNumber}`);
         if (radPresent && radPresent.checked) {
             present++;
@@ -1002,36 +1067,64 @@ function updateAttendanceCountText() {
 
 // Bulk mark buttons
 function bulkMarkAttendance(status) {
-    if (AppState.students.length === 0) return;
+    const courseVal = document.getElementById("attendanceFilterCourse").value;
+    const semVal = document.getElementById("attendanceFilterSemester").value;
     
-    AppState.students.forEach(student => {
+    if (!courseVal || !semVal) {
+        showToast("Please select Course and Semester first", "warning");
+        return;
+    }
+    
+    const displayedStudents = AppState.students.filter(student => {
+        return student.course === courseVal && student.semester === semVal;
+    });
+    
+    if (displayedStudents.length === 0) return;
+    
+    displayedStudents.forEach(student => {
         const radio = document.getElementById(status === "Present" ? `pres_${student.rollNumber}` : `abs_${student.rollNumber}`);
         if (radio) radio.checked = true;
     });
     
     updateAttendanceCountText();
-    showToast(`All students marked as ${status}`, "warning");
+    showToast(`Class marked as ${status}`, "warning");
 }
 
 // Save Registry
 function saveAttendanceRegistry() {
-    if (AppState.students.length === 0) {
+    const courseVal = document.getElementById("attendanceFilterCourse").value;
+    const semVal = document.getElementById("attendanceFilterSemester").value;
+    
+    if (!courseVal || !semVal) {
+        showToast("Please select Course and Semester first", "danger");
+        return;
+    }
+    
+    const displayedStudents = AppState.students.filter(student => {
+        return student.course === courseVal && student.semester === semVal;
+    });
+    
+    if (displayedStudents.length === 0) {
         showToast("Cannot save empty attendance registry", "danger");
         return;
     }
     
-    const logs = {};
-    AppState.students.forEach(student => {
+    // Initialize date logs if they don't exist
+    if (!AppState.attendance[AppState.currentDate]) {
+        AppState.attendance[AppState.currentDate] = {};
+    }
+    
+    // Merge new logs into existing logs for today
+    displayedStudents.forEach(student => {
         const radPresent = document.getElementById(`pres_${student.rollNumber}`);
-        logs[student.rollNumber] = (radPresent && radPresent.checked) ? "Present" : "Absent";
+        AppState.attendance[AppState.currentDate][student.rollNumber] = (radPresent && radPresent.checked) ? "Present" : "Absent";
     });
     
-    AppState.attendance[AppState.currentDate] = logs;
     saveToLocalStorage("attendance");
     
     const countText = document.getElementById("attendanceSubmitCount").textContent;
-    logActivity("success", `Saved daily attendance registry for ${AppState.currentDate} (${countText})`);
-    showToast(`Attendance registry saved successfully for ${AppState.currentDate}`, "success");
+    logActivity("success", `Saved attendance registry for ${courseVal} Sem ${semVal} on ${AppState.currentDate} (${countText})`);
+    showToast(`Attendance registry for ${courseVal} Sem ${semVal} saved successfully`, "success");
     
     renderAttendanceRegistry();
     renderDashboard();

@@ -392,7 +392,26 @@
                                     <input type="date" id="attendanceDatePicker">
                                 </div>
                             </div>
-                            <div class="attendance-meta-info" id="attendanceMetaInfo">
+                            <div class="filter-dropdowns" style="margin-left: 12px; display: flex; gap: 8px;">
+                                <select id="attendanceFilterCourse" class="filter-select">
+                                    <option value="">Select Course</option>
+                                    <option value="BCA">BCA</option>
+                                    <option value="BBA">BBA</option>
+                                    <option value="B.Tech">B.Tech</option>
+                                    <option value="B.Sc">B.Sc</option>
+                                </select>
+                                
+                                <select id="attendanceFilterSemester" class="filter-select">
+                                    <option value="">Select Semester</option>
+                                    <option value="I">I Sem</option>
+                                    <option value="II">II Sem</option>
+                                    <option value="III">III Sem</option>
+                                    <option value="IV">IV Sem</option>
+                                    <option value="V">V Sem</option>
+                                    <option value="VI">VI Sem</option>
+                                </select>
+                            </div>
+                            <div class="attendance-meta-info" id="attendanceMetaInfo" style="margin-left: 12px;">
                                 <span class="badge badge-warning" id="attendanceStatusBadge">Not Saved</span>
                             </div>
                         </div>
