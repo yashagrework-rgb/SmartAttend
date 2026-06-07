@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartAttend - Project Report</title>
+    <style>
+        body {
+            font-family: 'Arial', 'Times New Roman', sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            margin: 40px;
+        }
+        h1, h2, h3 {
+            color: #1a365d;
+        }
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-top: 50px;
+            text-transform: uppercase;
+        }
+        h2 {
+            border-bottom: 2px solid #2b6cb0;
+            padding-bottom: 8px;
+            margin-top: 40px;
+            font-size: 20px;
+        }
+        h3 {
+            margin-top: 24px;
+            font-size: 16px;
+        }
+        .cover-page {
+            text-align: center;
+            margin-bottom: 100px;
+            padding: 40px 0;
+        }
+        .cover-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .cover-subtitle {
+            font-size: 18px;
+            font-style: italic;
+            color: #4b5563;
+            margin-bottom: 80px;
+        }
+        .cover-details {
+            text-align: left;
+            display: inline-block;
+            margin-top: 40px;
+            font-size: 16px;
+        }
+        .cover-details td {
+            padding: 8px 16px;
+            vertical-align: top;
+        }
+        .cover-details td strong {
+            color: #1e3a8a;
+        }
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        table.data-table th, table.data-table td {
+            border: 1px solid #cbd5e1;
+            padding: 10px 14px;
+            text-align: left;
+        }
+        table.data-table th {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            font-weight: bold;
+        }
+        pre {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 16px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            overflow-x: auto;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #cbd5e1;
+            margin: 40px 0;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- COVER PAGE -->
+    <div class="cover-page">
+        <div class="cover-title">SmartAttend</div>
+        <div class="cover-subtitle">Student Attendance Management System (SAMS)</div>
+        <p style="font-size: 16px; font-weight: bold;">A Project Report submitted in partial fulfillment of the requirements for the Degree of Bachelor of Computer Applications (BCA)</p>
+        
+        <hr style="width: 60%; margin: 40px auto;">
+
+        <table class="cover-details">
+            <tr>
+                <td><strong>Student Name:</strong></td>
+                <td>Yash Agre</td>
+            </tr>
+            <tr>
+                <td><strong>Roll Number / University ID:</strong></td>
+                <td>23SCIT1AI03077</td>
+            </tr>
+            <tr>
+                <td><strong>Department:</strong></td>
+                <td>Computer Science & Information Technology</td>
+            </tr>
+            <tr>
+                <td><strong>Institution:</strong></td>
+                <td>Sam Global University</td>
+            </tr>
+            <tr>
+                <td><strong>Academic Session:</strong></td>
+                <td>2025 - 2026</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- MAIN SECTIONS -->
+    <h2>1. Project Overview & Abstract</h2>
+    <p><strong>SmartAttend</strong> is a modern, client-side web application designed to simplify, automate, and optimize the process of tracking student attendance in academic environments. Traditional registers are prone to manual errors, wear and tear, and lack instant data visualization. SmartAttend solves this by providing a highly visual, responsive dashboard interface coupled with detailed student registries, daily check-in workflows, and granular analytics reporting.</p>
+
+    <h3>Key Highlights</h3>
+    <ul>
+        <li><strong>Zero External Dependencies</strong>: Built using vanilla web technologies (HTML5, CSS3, ES6+ JS) with no external libraries (no React, jQuery, Tailwind, CDNs, or Chart.js).</li>
+        <li><strong>Local Storage Integration</strong>: Full database lifecycle simulated client-side via browser <code>localStorage</code> for offline portability.</li>
+        <li><strong>Granular Class Filtering</strong>: Teachers can record attendance for separate courses (BCA, BBA, B.Tech, B.Sc) and Semesters independently on the same date.</li>
+        <li><strong>Automated Defaulter Management</strong>: Highlights irregular students (&lt;75% attendance) and dynamically generates formal parental warning letters ready for printing.</li>
+    </ul>
+
+    <h2>2. System Architecture & Flow</h2>
+    <p>The system operates on an event-driven, single-page architecture where views are swapped dynamically using URL hash navigation. Data synchronization occurs in real-time between memory variables (<code>AppState</code>) and browser local storage.</p>
+    <p>On initial launch, the system detects if the database is empty, auto-generates 100 mock students across 4 major courses, preloads 5 days of history, and renders the Dashboard trend charts instantly.</p>
+
+    <h2>3. Core Modules & Features</h2>
+    
+    <h3>A. Dashboard Analytics & Statistics</h3>
+    <ul>
+        <li><strong>Live Gauges</strong>: Statistical cards tracking total students, present today, absent today, and overall cumulative attendance rate.</li>
+        <li><strong>Pulsing CTA</strong>: Displays a warning-coloured pulsing "Registry Pending" call-to-action if today's attendance has not been saved yet.</li>
+        <li><strong>Trend Analysis</strong>: A custom SVG-based line chart that dynamically plots the attendance percentage trend over the last 5 active registry dates.</li>
+        <li><strong>Course Distribution</strong>: Visual bar graphs displaying student enrollment counts and corresponding average attendance rates per course.</li>
+    </ul>
+
+    <h3>B. Student Directory (CRUD)</h3>
+    <ul>
+        <li><strong>Alphabetical sorting</strong>: Automatically sorts registered students alphabetically by name.</li>
+        <li><strong>Search & Filters</strong>: Real-time searching by name or roll number, and filters for course and semester.</li>
+        <li><strong>Client-side Pagination</strong>: Divides student directories into pages of 10 rows per page with active boundary disabling.</li>
+        <li><strong>CSV Bulk Importer</strong>: Allows users to import class lists in bulk. Checks for formatting, field validation, and duplicate roll numbers.</li>
+        <li><strong>CSV Template Downloader</strong>: A quick download tool that exports a pre-formatted template with headers and a sample student record.</li>
+    </ul>
+
+    <h3>C. Class-wise Attendance Registry</h3>
+    <ul>
+        <li><strong>Class Isolation</strong>: Restricts attendance marking to one specific course and semester at a time for ease of use.</li>
+        <li><strong>Live History Badges</strong>: Displays a real-time historical rate badge next to each student's name on the marking sheet, giving instant visual warning of irregular students.</li>
+        <li><strong>Non-destructive Saves</strong>: Saving attendance for a class merges logs into the date's overall record, preserving attendance taken by other coordinators on the same day.</li>
+        <li><strong>Status Badges</strong>: Indicates whether the selected class has completed its registry for the date.</li>
+    </ul>
+
+    <h3>D. Analytics & Export Reports</h3>
+    <ul>
+        <li><strong>Date Range Querying</strong>: Aggregates attendance statistics between any user-defined start and end dates.</li>
+        <li><strong>Defaulter Isolation</strong>: Toggles a view isolating students with attendance rates below the university threshold (75%).</li>
+        <li><strong>Warning Letter Generator</strong>: Automatically generates formal warning letters to parents for all identified defaulters. Features custom reference numbers, formal layout overrides, and a sliding navigator.</li>
+        <li><strong>Print Stylesheet Overrides</strong>: Media query overrides that strip away sidebars, headers, and dashboard widgets to print clean A4 sheets for report logs and warning letters.</li>
+        <li><strong>CSV Report Exporter</strong>: Downloads a complete attendance summary sheet for the filtered class.</li>
+    </ul>
+
+    <h2>4. Local Database Schema</h2>
+    <p>All data is structured as serialized JSON strings inside browser storage:</p>
+
+    <h3>1. Student Records (<code>sams_students</code>)</h3>
+    <pre>[
+  {
+    "rollNumber": "BCA-2026-001",
+    "fullName": "Aarav Sharma",
+    "course": "BCA",
+    "semester": "VI",
+    "email": "aarav.sharma@college.edu"
+  }
+]</pre>
+
+    <h3>2. Daily Attendance Logs (<code>sams_attendance</code>)</h3>
+    <pre>{
+  "2026-06-07": {
+    "BCA-2026-001": "Present",
+    "BCA-2026-002": "Absent"
+  }
+}</pre>
+
+    <h2>5. Design System Specifications</h2>
+    <p>SmartAttend uses a premium, modern design language centered around HSL CSS tokens to ensure clean colors, responsiveness, and consistent spacing.</p>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Token</th>
+                <th>Light Mode Value</th>
+                <th>Dark Mode Value</th>
+                <th>Semantic Purpose</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>--bg-primary</strong></td>
+                <td>#f8fafc (Slate 50)</td>
+                <td>#090d16 (Deep Navy)</td>
+                <td>Layout backdrop</td>
+            </tr>
+            <tr>
+                <td><strong>--bg-secondary</strong></td>
+                <td>#ffffff</td>
+                <td>#111827 (Slate 900)</td>
+                <td>Content card blocks</td>
+            </tr>
+            <tr>
+                <td><strong>--color-primary</strong></td>
+                <td>#3b82f6 (Blue 500)</td>
+                <td>#3b82f6</td>
+                <td>Brand focus & actions</td>
+            </tr>
+            <tr>
+                <td><strong>--color-success</strong></td>
+                <td>#10b981 (Emerald)</td>
+                <td>#10b981</td>
+                <td>Present status badges</td>
+            </tr>
+            <tr>
+                <td><strong>--color-danger</strong></td>
+                <td>#ef4444 (Coral Red)</td>
+                <td>#ef4444</td>
+                <td>Absent status & Defaulters</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>6. Future Scope</h2>
+    <ol>
+        <li><strong>Server API Synchronization</strong>: Transitioning local storage JSON hooks to a secure REST API (Node.js/Django) for centralized database storage.</li>
+        <li><strong>Biometric Integration</strong>: Hooking up student check-ins to fingerprint scanners or face-recognition APIs.</li>
+        <li><strong>SMS Notification Gateways</strong>: Automatically sending real-time SMS alerts to parents when a student is marked absent.</li>
+    </ol>
+
+</body>
+</html>

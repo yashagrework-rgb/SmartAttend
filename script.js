@@ -1,13 +1,6 @@
-/*
-========================================================================
-   STUDENT ATTENDANCE MANAGEMENT SYSTEM (SAMS) - CORE SCRIPT
-========================================================================
-*/
-
-// --- State Management ---
 const AppState = {
     students: [],
-    attendance: {}, // Schema: { "YYYY-MM-DD": { "RollNo": "Present"|"Absent" } }
+    attendance: {},
     activities: [],
     currentDate: '',
     editingRoll: null,
@@ -18,8 +11,6 @@ const AppState = {
     studentRowsPerPage: 10
 };
 
-// --- Mock Data Setup ---
-// --- Mock Data Setup ---
 const firstNames = ["Aarav", "Aditi", "Rahul", "Priya", "Vikram", "Neha", "Arjun", "Ananya", "Rohan", "Sneha", "Kabir", "Diya", "Siddharth", "Pooja", "Varun", "Shruti", "Manish", "Meera", "Yash", "Tanvi", "Aditya", "Riya", "Kunal", "Amit", "Kiran"];
 const lastNames = ["Sharma", "Patel", "Verma", "Singh", "Malhotra", "Iyer", "Joshi", "Reddy", "Mehta", "Sen", "Kapoor", "Gupta", "Shah", "Nair", "Vardhan", "Hegde", "Rao", "Saxena", "Choudhury", "Bhatia", "Roy", "Trivedi", "Dhawan", "Goel", "Pandey"];
 const courses = ["BCA", "BBA", "B.Tech", "B.Sc"];
@@ -31,12 +22,10 @@ courses.forEach(course => {
         const fName = firstNames[(i * 3 + course.charCodeAt(0)) % firstNames.length];
         const lName = lastNames[(i * 7 + course.charCodeAt(1)) % lastNames.length];
         const fullName = `${fName} ${lName}`;
-        
         const indexStr = String(i).padStart(3, '0');
         const year = course === "B.Tech" ? "2025" : "2026";
         const code = course === "B.Tech" ? "BTC" : (course === "B.Sc" ? "BSC" : course);
         const rollNumber = `${code}-${year}-${indexStr}`;
-        
         const semester = semesters[i % semesters.length];
         const email = `${fName.toLowerCase()}.${lName.toLowerCase()}${i}@smartattend.edu`;
         
@@ -72,24 +61,19 @@ const MOCK_ACTIVITIES = [
     { id: 6, type: "success", message: "Attendance registry saved for 2026-06-02", time: "2026-06-02T14:40:00" }
 ];
 
-// --- Initializing Application ---
 document.addEventListener("DOMContentLoaded", () => {
     initializeDate();
     loadLocalStorageData();
     setupNavigation();
     setupTheme();
     setupEventListeners();
-    
-    // Initial UI Render
     renderDashboard();
     renderStudentDirectory();
     renderAttendanceRegistry();
     renderReports();
 });
 
-// Set current date in picker and layout header
 function initializeDate() {
-    // Current Local time is June 7, 2026 based on prompt metadata
     const today = new Date("2026-06-07");
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -97,28 +81,22 @@ function initializeDate() {
     
     AppState.currentDate = `${yyyy}-${mm}-${dd}`;
     
-    // Set Pickers Default Value
     document.getElementById("attendanceDatePicker").value = AppState.currentDate;
-    
-    // Set reports default range (Start of month to today)
     document.getElementById("reportStartDate").value = `${yyyy}-${mm}-01`;
     document.getElementById("reportEndDate").value = AppState.currentDate;
     
-    // Render text date in header
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     document.getElementById("currentDateDisplay").textContent = today.toLocaleDateString('en-US', options);
     document.getElementById("dashPresentDate").textContent = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric'});
     document.getElementById("dashAbsentDate").textContent = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric'});
 }
 
-// --- Data Layer (LocalStorage Synchronization) ---
 function loadLocalStorageData() {
     const localStudents = localStorage.getItem("sams_students");
     const localAttendance = localStorage.getItem("sams_attendance");
     const localActivities = localStorage.getItem("sams_activities");
     
     if (!localStudents) {
-        // First run: load mock datasets
         AppState.students = [...MOCK_STUDENTS];
         AppState.attendance = { ...MOCK_ATTENDANCE };
         AppState.activities = [...MOCK_ACTIVITIES];
@@ -150,13 +128,12 @@ function saveToLocalStorage(key) {
 function logActivity(type, message) {
     const newLog = {
         id: Date.now(),
-        type: type, // 'success', 'danger', 'primary', 'warning'
+        type: type,
         message: message,
         time: new Date().toISOString()
     };
     
     AppState.activities.unshift(newLog);
-    // Limit activities log to 30 items
     if (AppState.activities.length > 30) {
         AppState.activities.pop();
     }
@@ -164,14 +141,11 @@ function logActivity(type, message) {
     renderRecentActivities();
 }
 
-// --- Navigation Engine ---
 function setupNavigation() {
     const navLinks = document.querySelectorAll(".nav-link");
     
-    // Watch URL hashes
     window.addEventListener("hashchange", handleHashNavigation);
     
-    // Handle manual clicks
     navLinks.forEach(link => {
         link.addEventListener("click", (e) => {
             e.preventDefault();
@@ -180,7 +154,6 @@ function setupNavigation() {
         });
     });
     
-    // Initial page check
     handleHashNavigation();
 }
 
@@ -193,7 +166,6 @@ function triggerNav(sectionId) {
     const validSections = ["dashboard", "students", "attendance", "reports"];
     if (!validSections.includes(sectionId)) return;
     
-    // Update active nav-link UI
     const navLinks = document.querySelectorAll(".nav-link");
     navLinks.forEach(link => {
         if (link.getAttribute("data-section") === sectionId) {
@@ -203,7 +175,6 @@ function triggerNav(sectionId) {
         }
     });
     
-    // Update Content Section UI
     const sections = document.querySelectorAll(".content-section");
     sections.forEach(sec => {
         if (sec.id === `${sectionId}Section`) {
@@ -213,7 +184,6 @@ function triggerNav(sectionId) {
         }
     });
     
-    // Update Page Header Title
     const titles = {
         "dashboard": "Dashboard Metrics",
         "students": "Student Database Directory",
@@ -222,7 +192,6 @@ function triggerNav(sectionId) {
     };
     document.getElementById("pageTitle").textContent = titles[sectionId];
     
-    // Perform section specific operations on load
     if (sectionId === "dashboard") {
         renderDashboard();
     } else if (sectionId === "students") {
@@ -233,17 +202,12 @@ function triggerNav(sectionId) {
         renderReports();
     }
     
-    // Auto-close sidebar on mobile after navigating
     document.getElementById("sidebar").classList.remove("active");
 }
 
-// --- Theme Switcher Logic ---
 function setupTheme() {
     const themeToggleBtn = document.getElementById("themeToggleBtn");
-    const themeText = document.getElementById("themeToggleText");
     const htmlTag = document.documentElement;
-    
-    // Load theme setting
     const savedTheme = localStorage.getItem("sams_theme") || "light";
     htmlTag.setAttribute("data-theme", savedTheme);
     updateThemeUI(savedTheme);
@@ -268,9 +232,7 @@ function updateThemeUI(theme) {
     }
 }
 
-// --- Event Handlers Setup ---
 function setupEventListeners() {
-    // Mobile Navigation triggers
     const mobileMenuBtn = document.getElementById("mobileMenuBtn");
     const mobileCloseBtn = document.getElementById("mobileCloseBtn");
     const sidebar = document.getElementById("sidebar");
@@ -278,7 +240,6 @@ function setupEventListeners() {
     mobileMenuBtn.addEventListener("click", () => sidebar.classList.add("active"));
     mobileCloseBtn.addEventListener("click", () => sidebar.classList.remove("active"));
     
-    // Modal Student Triggers
     const btnAddNewStudent = document.getElementById("btnAddNewStudent");
     const btnQuickAddStudent = document.getElementById("btnQuickAddStudent");
     const btnCancelStudent = document.getElementById("btnCancelStudent");
@@ -290,10 +251,8 @@ function setupEventListeners() {
     btnCancelStudent.addEventListener("click", () => closeStudentModal());
     closeModalBtn.addEventListener("click", () => closeStudentModal());
     
-    // Student Form submission
     studentForm.addEventListener("submit", handleStudentSubmit);
     
-    // Input validators for instant field clearing on keypress
     document.querySelectorAll(".form-input").forEach(input => {
         input.addEventListener("input", () => {
             const formGroup = input.closest(".form-group");
@@ -301,7 +260,6 @@ function setupEventListeners() {
         });
     });
     
-    // Student Filters & Search (with page reset to 1)
     document.getElementById("studentSearchInput").addEventListener("input", () => {
         AppState.studentPage = 1;
         renderStudentDirectory();
@@ -315,12 +273,10 @@ function setupEventListeners() {
         renderStudentDirectory();
     });
     
-    // Delete Confirmation Modals
     document.getElementById("btnCancelConfirm").addEventListener("click", closeConfirmModal);
     document.getElementById("closeConfirmBtn").addEventListener("click", closeConfirmModal);
     document.getElementById("btnYesConfirm").addEventListener("click", executeStudentDelete);
     
-    // Attendance Actions
     document.getElementById("attendanceDatePicker").addEventListener("change", (e) => {
         AppState.currentDate = e.target.value;
         renderAttendanceRegistry();
@@ -331,14 +287,12 @@ function setupEventListeners() {
     document.getElementById("btnMarkAllAbsent").addEventListener("click", () => bulkMarkAttendance("Absent"));
     document.getElementById("btnSaveAttendance").addEventListener("click", saveAttendanceRegistry);
     
-    // Reports filters
     document.getElementById("reportStartDate").addEventListener("change", renderReports);
     document.getElementById("reportEndDate").addEventListener("change", renderReports);
     document.getElementById("reportFilterCourse").addEventListener("change", renderReports);
     document.getElementById("reportFilterSemester").addEventListener("change", renderReports);
     document.getElementById("btnExportCSV").addEventListener("click", exportAttendanceReportToCSV);
     
-    // SAMS Defaulter & Print triggers
     const defaulterToggle = document.getElementById("defaulterToggle");
     if (defaulterToggle) {
         defaulterToggle.addEventListener("change", renderReports);
@@ -362,7 +316,6 @@ function setupEventListeners() {
         });
     }
 
-    // CSV Student Import bindings
     const btnImportCSVStudents = document.getElementById("btnImportCSVStudents");
     const studentCSVInput = document.getElementById("studentCSVInput");
     if (btnImportCSVStudents && studentCSVInput) {
@@ -370,7 +323,6 @@ function setupEventListeners() {
         studentCSVInput.addEventListener("change", handleCSVImport);
     }
 
-    // Warning Letters Simulation bindings
     const btnGenerateWarnings = document.getElementById("btnGenerateWarnings");
     if (btnGenerateWarnings) {
         btnGenerateWarnings.addEventListener("click", openWarningLettersModal);
@@ -404,7 +356,6 @@ function setupEventListeners() {
         btnPrintWarning.addEventListener("click", printWarningLetter);
     }
 
-    // Student Directory Pagination bindings
     const btnStudentPrevPage = document.getElementById("btnStudentPrevPage");
     const btnStudentNextPage = document.getElementById("btnStudentNextPage");
     if (btnStudentPrevPage) {
@@ -435,27 +386,22 @@ function setupEventListeners() {
         });
     }
 
-    // CSV Import Template Exporter
     const btnExportCSVTemplate = document.getElementById("btnExportCSVTemplate");
     if (btnExportCSVTemplate) {
         btnExportCSVTemplate.addEventListener("click", exportCSVTemplate);
     }
 }
 
-// --- Dashboard Rendering ---
 function renderDashboard() {
-    // 1. Total Registered Students count
     const totalStudents = AppState.students.length;
     document.getElementById("dashTotalStudents").textContent = totalStudents;
     
-    // 2. Present and Absent Today counts
     const todayLogs = AppState.attendance[AppState.currentDate];
     let presentCount = 0;
     let absentCount = 0;
     
     if (todayLogs) {
         Object.keys(todayLogs).forEach(roll => {
-            // Check if student still exists
             const studentExists = AppState.students.some(s => s.rollNumber === roll);
             if (studentExists) {
                 if (todayLogs[roll] === "Present") presentCount++;
@@ -471,7 +417,6 @@ function renderDashboard() {
         document.getElementById("dashAbsentToday").innerHTML = ctaHtml;
     }
     
-    // 3. Overall Cumulative Attendance Percentage
     let totalPresentLogs = 0;
     let totalLogsCount = 0;
     
@@ -491,19 +436,13 @@ function renderDashboard() {
     document.getElementById("dashPercentage").textContent = `${overallRate}%`;
     document.getElementById("dashPercentageText").textContent = `${overallRate}%`;
     
-    // Update circle SVG progress gauge
     const circle = document.getElementById("dashProgressCircle");
-    const circumference = 213.6; // 2 * pi * r (r=34)
+    const circumference = 213.6;
     const offset = circumference - (overallRate / 100) * circumference;
     circle.style.strokeDashoffset = offset;
     
-    // 4. Course Analytics Bar distribution
     renderCourseBars();
-    
-    // 5. Draw Trend SVG Line Chart
     renderTrendChart();
-    
-    // 6. Build recent activities log
     renderRecentActivities();
 }
 
@@ -511,7 +450,6 @@ function renderCourseBars() {
     const barContainer = document.getElementById("coursesBarContainer");
     barContainer.innerHTML = "";
     
-    // Calculate student enrollments and rates per course
     const courseStats = {};
     const coursesList = ["BCA", "BBA", "B.Tech", "B.Sc"];
     
@@ -523,14 +461,12 @@ function renderCourseBars() {
         };
     });
     
-    // Calculate enrollments
     AppState.students.forEach(student => {
         if (courseStats[student.course]) {
             courseStats[student.course].enrollment++;
         }
     });
     
-    // Calculate attendance logs per course
     Object.keys(AppState.attendance).forEach(date => {
         const dayLogs = AppState.attendance[date];
         Object.keys(dayLogs).forEach(roll => {
@@ -544,7 +480,6 @@ function renderCourseBars() {
         });
     });
     
-    // Build and render HTML elements
     coursesList.forEach(course => {
         const stats = courseStats[course];
         const rate = stats.totalDays > 0 ? Math.round((stats.presentDays / stats.totalDays) * 100) : 0;
@@ -591,7 +526,6 @@ function renderRecentActivities() {
     });
 }
 
-// --- Student Management (CRUD Actions) ---
 function renderStudentDirectory() {
     const tableBody = document.getElementById("studentTableBody");
     const summaryText = document.getElementById("studentTableSummary");
@@ -602,7 +536,6 @@ function renderStudentDirectory() {
     
     tableBody.innerHTML = "";
     
-    // Filters search logic
     const filteredStudents = AppState.students.filter(student => {
         const matchesSearch = student.fullName.toLowerCase().includes(searchVal) || 
                               student.rollNumber.toLowerCase().includes(searchVal);
@@ -613,7 +546,6 @@ function renderStudentDirectory() {
     });
     
     const totalPages = Math.ceil(filteredStudents.length / AppState.studentRowsPerPage) || 1;
-    // Bound page range
     if (AppState.studentPage > totalPages) {
         AppState.studentPage = totalPages;
     }
@@ -655,7 +587,6 @@ function renderStudentDirectory() {
         return;
     }
     
-    // Sort students alphabetically by name
     filteredStudents.sort((a, b) => a.fullName.localeCompare(b.fullName));
     
     const startIdx = (AppState.studentPage - 1) * AppState.studentRowsPerPage;
@@ -696,23 +627,20 @@ function renderStudentDirectory() {
     summaryText.textContent = `Showing ${startIdx + 1} to ${Math.min(endIdx, filteredStudents.length)} of ${filteredStudents.length} students (Total: ${AppState.students.length})`;
 }
 
-// Modal handling
 function openStudentModal(roll = null) {
     const modal = document.getElementById("studentModal");
     const modalTitle = document.getElementById("modalTitle");
     const studentForm = document.getElementById("studentForm");
     const rollInput = document.getElementById("studentRoll");
     
-    // Clear validation styling & values
     studentForm.reset();
     document.querySelectorAll(".form-group").forEach(fg => fg.classList.remove("invalid"));
     document.getElementById("modalErrorSummary").style.display = "none";
     
     if (roll) {
-        // Edit Mode
         AppState.editingRoll = roll;
         modalTitle.textContent = "Edit Student Details";
-        rollInput.setAttribute("disabled", "true"); // Prevent changing primary key ID
+        rollInput.setAttribute("disabled", "true");
         
         const student = AppState.students.find(s => s.rollNumber === roll);
         if (student) {
@@ -723,7 +651,6 @@ function openStudentModal(roll = null) {
             document.getElementById("studentEmail").value = student.email;
         }
     } else {
-        // Add Mode
         AppState.editingRoll = null;
         modalTitle.textContent = "Register New Student";
         rollInput.removeAttribute("disabled");
@@ -737,11 +664,9 @@ function closeStudentModal() {
     AppState.editingRoll = null;
 }
 
-// Form Handlers
 function handleStudentSubmit(e) {
     e.preventDefault();
     
-    // Perform custom validation checks
     const rollInput = document.getElementById("studentRoll");
     const nameInput = document.getElementById("studentName");
     const courseInput = document.getElementById("studentCourse");
@@ -756,7 +681,6 @@ function handleStudentSubmit(e) {
     
     let isFormValid = true;
     
-    // 1. Roll Number Validation
     if (!roll) {
         showFieldError(rollInput, "Roll number is required.");
         isFormValid = false;
@@ -765,7 +689,6 @@ function handleStudentSubmit(e) {
         isFormValid = false;
     }
     
-    // 2. Name validation
     if (!name) {
         showFieldError(nameInput, "Student's full name is required.");
         isFormValid = false;
@@ -774,19 +697,16 @@ function handleStudentSubmit(e) {
         isFormValid = false;
     }
     
-    // 3. Course validation
     if (!course) {
         showFieldError(courseInput, "Please select a valid course.");
         isFormValid = false;
     }
     
-    // 4. Semester validation
     if (!sem) {
         showFieldError(semInput, "Please select a valid semester.");
         isFormValid = false;
     }
     
-    // 5. Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
         showFieldError(emailInput, "Email address is required.");
@@ -801,9 +721,7 @@ function handleStudentSubmit(e) {
         return;
     }
     
-    // Save details to database
     if (AppState.editingRoll) {
-        // Update
         const studentIndex = AppState.students.findIndex(s => s.rollNumber === AppState.editingRoll);
         if (studentIndex !== -1) {
             AppState.students[studentIndex] = {
@@ -817,7 +735,6 @@ function handleStudentSubmit(e) {
             showToast("Student details updated successfully", "success");
         }
     } else {
-        // Add new
         AppState.students.push({
             rollNumber: roll,
             fullName: name,
@@ -844,7 +761,6 @@ function showFieldError(inputEl, errMsg) {
     }
 }
 
-// Delete Handlers
 function openConfirmModal(roll) {
     AppState.deletingRoll = roll;
     const student = AppState.students.find(s => s.rollNumber === roll);
@@ -867,11 +783,9 @@ function executeStudentDelete() {
     const student = AppState.students.find(s => s.rollNumber === roll);
     const name = student ? student.fullName : roll;
     
-    // Remove student
     AppState.students = AppState.students.filter(s => s.rollNumber !== roll);
     saveToLocalStorage("students");
     
-    // Clean up attendance associated logs (optional - here we keep database clean by pruning)
     Object.keys(AppState.attendance).forEach(date => {
         if (AppState.attendance[date][roll]) {
             delete AppState.attendance[date][roll];
@@ -887,7 +801,6 @@ function executeStudentDelete() {
     renderDashboard();
 }
 
-// --- Attendance Management (Check-in logic) ---
 function renderAttendanceRegistry() {
     const tableBody = document.getElementById("attendanceTableBody");
     const statusBadge = document.getElementById("attendanceStatusBadge");
@@ -969,29 +882,25 @@ function renderAttendanceRegistry() {
     }
     
     const dateLogs = AppState.attendance[AppState.currentDate];
-    // Check if logs exist for all students in this class
     const isSaved = dateLogs && filteredStudents.every(student => dateLogs[student.rollNumber] !== undefined);
     
     if (isSaved) {
         statusBadge.textContent = "Registry Saved";
         statusBadge.className = "badge badge-green";
-        warningBar.style.display = "flex"; // Warn about overwrite danger
+        warningBar.style.display = "flex";
     } else {
         statusBadge.textContent = "Not Saved";
         statusBadge.className = "badge badge-warning";
     }
     
-    // Sort students alphabetically
     const sortedStudents = [...filteredStudents].sort((a, b) => a.fullName.localeCompare(b.fullName));
     
     sortedStudents.forEach(student => {
-        // If saved, load. If not saved, default to "Present" for faster marking workflow
         let status = "Present";
         if (dateLogs && dateLogs[student.rollNumber]) {
             status = dateLogs[student.rollNumber];
         }
         
-        // Calculate historical attendance rate
         let presentCount = 0;
         let totalCount = 0;
         Object.keys(AppState.attendance).forEach(d => {
@@ -1065,7 +974,6 @@ function updateAttendanceCountText() {
     document.getElementById("attendanceSubmitCount").textContent = `${present} / ${total} marked Present`;
 }
 
-// Bulk mark buttons
 function bulkMarkAttendance(status) {
     const courseVal = document.getElementById("attendanceFilterCourse").value;
     const semVal = document.getElementById("attendanceFilterSemester").value;
@@ -1090,7 +998,6 @@ function bulkMarkAttendance(status) {
     showToast(`Class marked as ${status}`, "warning");
 }
 
-// Save Registry
 function saveAttendanceRegistry() {
     const courseVal = document.getElementById("attendanceFilterCourse").value;
     const semVal = document.getElementById("attendanceFilterSemester").value;
@@ -1109,12 +1016,10 @@ function saveAttendanceRegistry() {
         return;
     }
     
-    // Initialize date logs if they don't exist
     if (!AppState.attendance[AppState.currentDate]) {
         AppState.attendance[AppState.currentDate] = {};
     }
     
-    // Merge new logs into existing logs for today
     displayedStudents.forEach(student => {
         const radPresent = document.getElementById(`pres_${student.rollNumber}`);
         AppState.attendance[AppState.currentDate][student.rollNumber] = (radPresent && radPresent.checked) ? "Present" : "Absent";
@@ -1130,7 +1035,6 @@ function saveAttendanceRegistry() {
     renderDashboard();
 }
 
-// --- Reports Generation & Analytics ---
 function renderReports() {
     const tableBody = document.getElementById("reportTableBody");
     const summaryRow = document.getElementById("reportsSummaryRow");
@@ -1147,12 +1051,10 @@ function renderReports() {
         return;
     }
     
-    // 1. Find all active attendance dates within range
     const allDates = Object.keys(AppState.attendance).filter(date => {
         return date >= startVal && date <= endVal;
     });
     
-    // 2. Filter students according to parameters
     const filteredStudents = AppState.students.filter(student => {
         const matchesCourse = courseVal === "" || student.course === courseVal;
         const matchesSem = semVal === "" || student.semester === semVal;
@@ -1185,7 +1087,6 @@ function renderReports() {
     let globalLecturesSum = 0;
     const reportData = [];
     
-    // 3. Aggregate metrics for each student
     filteredStudents.forEach(student => {
         let presentCount = 0;
         let totalSessionsCount = 0;
@@ -1214,7 +1115,6 @@ function renderReports() {
         });
     });
     
-    // Filter by defaulter status if switch is checked
     const defaultersOnly = document.getElementById("defaulterToggle") ? document.getElementById("defaulterToggle").checked : false;
     const reportSection = document.getElementById("reportsSection");
     
@@ -1226,10 +1126,8 @@ function renderReports() {
         if (reportSection) reportSection.classList.remove("defaulter-view-active");
     }
     
-    // Sort report rows alphabetically
     finalReportData.sort((a, b) => a.student.fullName.localeCompare(b.student.fullName));
     
-    // 4. Render Table rows
     finalReportData.forEach(item => {
         let badgeColorClass = "badge-red";
         if (item.rate >= 75) {
@@ -1254,16 +1152,12 @@ function renderReports() {
         tableBody.insertAdjacentHTML("beforeend", row);
     });
     
-    // 5. Update UI Widgets & Subtitle
     const avgOverallRate = globalLecturesSum > 0 ? Math.round((globalPresentSum / globalLecturesSum) * 100) : 0;
-    
-    // If defaulters view is active, update the total count card to reflect number of defaulters, not total registrations!
     const displayStudentCount = defaultersOnly ? finalReportData.length : filteredStudents.length;
     updateReportMetaWidgets(allDates.length, displayStudentCount, avgOverallRate);
     
     document.getElementById("reportTableSummary").textContent = `Showing ${finalReportData.length} student records`;
     
-    // Update report subtitle
     const startFormatted = new Date(startVal).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     const endFormatted = new Date(endVal).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     if (defaultersOnly) {
@@ -1274,7 +1168,6 @@ function renderReports() {
         document.getElementById("reportMetaSubtitle").className = "badge badge-blue";
     }
 
-    // Toggle simulated warnings button based on defaulter mode and list count
     const btnGenerateWarnings = document.getElementById("btnGenerateWarnings");
     if (btnGenerateWarnings) {
         if (defaultersOnly && finalReportData.length > 0) {
@@ -1291,7 +1184,6 @@ function updateReportMetaWidgets(daysCount, studentCount, avgRate) {
     document.getElementById("reportAvgRate").textContent = `${avgRate}%`;
 }
 
-// Export CSV Functionality
 function exportAttendanceReportToCSV() {
     const startVal = document.getElementById("reportStartDate").value;
     const endVal = document.getElementById("reportEndDate").value;
@@ -1310,10 +1202,7 @@ function exportAttendanceReportToCSV() {
         return;
     }
     
-    // Build CSV Content
     let csvContent = "data:text/csv;charset=utf-8,";
-    
-    // CSV Header row
     csvContent += "Roll Number,Full Name,Course,Semester,Lectures Present,Lectures Absent,Total Classes,Attendance Rate (%)\r\n";
     
     filteredStudents.sort((a, b) => a.fullName.localeCompare(b.fullName)).forEach(student => {
@@ -1335,7 +1224,6 @@ function exportAttendanceReportToCSV() {
         csvContent += row;
     });
     
-    // Trigger download anchor
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
@@ -1349,13 +1237,11 @@ function exportAttendanceReportToCSV() {
     showToast("CSV report generated successfully", "success");
 }
 
-// --- Notification UI Elements (Toast Alerts) ---
 function showToast(message, type = "primary") {
     const container = document.getElementById("toastContainer");
     const toast = document.createElement("div");
     toast.className = `toast toast-${type}`;
     
-    // Select Icon based on type
     let svgIcon = '';
     if (type === "success") {
         svgIcon = `
@@ -1403,14 +1289,12 @@ function showToast(message, type = "primary") {
     
     container.appendChild(toast);
     
-    // Setup close listener
     const closeBtn = toast.querySelector(".toast-close");
     closeBtn.addEventListener("click", () => {
         toast.style.transform = "translateX(120%)";
         setTimeout(() => toast.remove(), 300);
     });
     
-    // Auto-remove after 4 seconds
     setTimeout(() => {
         if (toast.parentNode) {
             toast.style.transform = "translateX(120%)";
@@ -1419,15 +1303,11 @@ function showToast(message, type = "primary") {
     }, 4000);
 }
 
-// --- Dynamic SVG Trend Chart Generator ---
 function renderTrendChart() {
     const container = document.getElementById("trendChartContainer");
     if (!container) return;
     
-    // 1. Get dates in chronological order
     const dates = Object.keys(AppState.attendance).sort();
-    
-    // Take latest 5 dates
     const latestDates = dates.slice(-5);
     
     if (latestDates.length === 0) {
@@ -1445,7 +1325,6 @@ function renderTrendChart() {
         return;
     }
     
-    // Calculate rate for each date
     const points = [];
     latestDates.forEach((date) => {
         const logs = AppState.attendance[date];
@@ -1462,7 +1341,6 @@ function renderTrendChart() {
         
         const rate = totalLogs > 0 ? Math.round((presentCount / totalLogs) * 100) : 0;
         
-        // Date formatting e.g. "Jun 4"
         const dStr = date.split("-");
         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         const monthIndex = parseInt(dStr[1]) - 1;
@@ -1475,7 +1353,6 @@ function renderTrendChart() {
         });
     });
     
-    // SVG Settings
     const svgWidth = 500;
     const svgHeight = 200;
     const paddingLeft = 40;
@@ -1485,11 +1362,8 @@ function renderTrendChart() {
     
     const plotWidth = svgWidth - paddingLeft - paddingRight;
     const plotHeight = svgHeight - paddingTop - paddingBottom;
-    
-    // X coordinates step
     const xStep = points.length > 1 ? plotWidth / (points.length - 1) : plotWidth;
     
-    // Build path coordinates
     let linePathD = "";
     let areaPathD = "";
     const dotsHtml = [];
@@ -1497,7 +1371,6 @@ function renderTrendChart() {
     
     points.forEach((pt, i) => {
         const x = paddingLeft + i * xStep;
-        // Y mapping: rate 100% -> Y=paddingTop, rate 0% -> Y=svgHeight - paddingBottom
         const y = (svgHeight - paddingBottom) - (pt.rate / 100) * plotHeight;
         
         if (i === 0) {
@@ -1512,7 +1385,6 @@ function renderTrendChart() {
             areaPathD += ` L ${x} ${svgHeight - paddingBottom} Z`;
         }
         
-        // SVG Dots with tooltips
         dotsHtml.push(`
             <circle class="chart-dot" cx="${x}" cy="${y}" r="5">
                 <title>${pt.fullDate}: ${pt.rate}% Attendance</title>
@@ -1520,13 +1392,11 @@ function renderTrendChart() {
             <text x="${x}" y="${y - 10}" class="chart-axis-label" text-anchor="middle" font-weight="700" fill="var(--text-primary)">${pt.rate}%</text>
         `);
         
-        // X-axis label
         labelsHtml.push(`
             <text x="${x}" y="${svgHeight - 10}" class="chart-axis-label" text-anchor="middle">${pt.date}</text>
         `);
     });
     
-    // Draw Y grid lines (100%, 75%, 50%, 25%, 0%)
     const gridLines = [];
     const percentages = [0, 25, 50, 75, 100];
     percentages.forEach(pct => {
@@ -1545,20 +1415,10 @@ function renderTrendChart() {
                     <stop offset="100%" stop-color="var(--color-primary)" stop-opacity="0.0"/>
                 </linearGradient>
             </defs>
-            
-            <!-- Grid Lines -->
             ${gridLines.join("")}
-            
-            <!-- Area Fill -->
             ${points.length > 0 ? `<path class="chart-area" d="${areaPathD}"></path>` : ""}
-            
-            <!-- Trend Line -->
             ${points.length > 0 ? `<path class="chart-line" d="${linePathD}"></path>` : ""}
-            
-            <!-- Data Dots -->
             ${dotsHtml.join("")}
-            
-            <!-- X-axis Labels -->
             ${labelsHtml.join("")}
         </svg>
     `;
@@ -1566,7 +1426,6 @@ function renderTrendChart() {
     container.innerHTML = svgContent;
 }
 
-// --- Import Students CSV Parser ---
 function handleCSVImport(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -1637,7 +1496,6 @@ function handleCSVImport(e) {
     reader.readAsText(file);
 }
 
-// --- Warning Letters Generation ---
 function openWarningLettersModal() {
     const startVal = document.getElementById("reportStartDate").value;
     const endVal = document.getElementById("reportEndDate").value;
@@ -1768,12 +1626,10 @@ function printWarningLetter() {
     }, 500);
 }
 
-// Download CSV Import Template
 function exportCSVTemplate() {
     const headers = "Roll Number,Full Name,Course,Semester,Email Address\r\n";
     const sampleRow = `"BCA-2026-001","Aarav Sharma","BCA","VI","aarav.sharma@college.edu"\r\n`;
     
-    // Create CSV blob and trigger download
     const csvContent = "data:text/csv;charset=utf-8," + encodeURIComponent(headers + sampleRow);
     const link = document.createElement("a");
     link.setAttribute("href", csvContent);

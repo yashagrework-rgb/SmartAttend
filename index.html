@@ -4,18 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartAttend - Student Attendance Management System</title>
-    <!-- Google Fonts: Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Main Style Sheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- App Container -->
     <div class="app-container">
         
-        <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo-container">
@@ -118,9 +114,7 @@
             </div>
         </aside>
 
-        <!-- Main Content Area -->
         <main class="main-content">
-            <!-- Top Navbar -->
             <header class="top-navbar">
                 <div class="header-left">
                     <button class="btn-icon mobile-menu-btn" id="mobileMenuBtn" aria-label="Open Menu">
@@ -143,12 +137,9 @@
                 </div>
             </header>
 
-            <!-- Content Body (Dynamic Sections) -->
             <div class="content-body">
                 
-                <!-- DASHBOARD SECTION -->
                 <section id="dashboardSection" class="content-section active">
-                    <!-- Stats Grid -->
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-icon-wrapper bg-blue-light text-blue">
@@ -209,11 +200,8 @@
                         </div>
                     </div>
 
-                    <!-- Dashboard Core Grid -->
                     <div class="dashboard-grid">
-                        <!-- Left Panel: Quick Links & Summary Charts -->
                         <div class="dashboard-left-column">
-                            <!-- Trend Chart Card -->
                             <div class="dashboard-card main-panel margin-bottom-24">
                                 <div class="card-header">
                                     <h2 class="card-title">5-Day Attendance Trend Analysis</h2>
@@ -222,12 +210,10 @@
                                 <div class="card-body chart-card-body">
                                     <p class="card-desc">Daily attendance fluctuations over the last 5 active registry dates.</p>
                                     <div class="chart-container" id="trendChartContainer">
-                                        <!-- SVG Chart will be injected here -->
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Course Bars Card -->
                             <div class="dashboard-card main-panel">
                                 <div class="card-header">
                                     <h2 class="card-title">Course Enrollment & Attendance Summary</h2>
@@ -236,13 +222,11 @@
                                 <div class="card-body">
                                     <p class="card-desc">Visual distribution of average attendance rates and enrollment counts across active college courses.</p>
                                     <div class="courses-bars-container" id="coursesBarContainer">
-                                        <!-- Dynamic Course Bars will go here -->
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Right Panel: Quick Actions & Log -->
                         <div class="dashboard-card side-panel">
                             <div class="card-header">
                                 <h2 class="card-title">Quick Actions</h2>
@@ -281,7 +265,6 @@
                             </div>
                             <div class="card-body log-body">
                                 <div class="activity-log" id="recentActivityLog">
-                                    <!-- Logs populated dynamically -->
                                     <div class="log-item empty">No recent actions recorded.</div>
                                 </div>
                             </div>
@@ -289,10 +272,8 @@
                     </div>
                 </section>
 
-                <!-- STUDENTS SECTION -->
                 <section id="studentsSection" class="content-section">
                     <div class="section-controls">
-                        <!-- Search and Filter panel -->
                         <div class="controls-left">
                             <div class="search-box-wrapper">
                                 <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -352,7 +333,6 @@
                         </div>
                     </div>
 
-                    <!-- Student List Directory Table -->
                     <div class="table-card">
                         <div class="table-responsive">
                             <table class="data-table" id="studentTable">
@@ -367,7 +347,6 @@
                                     </tr>
                                 </thead>
                                 <tbody id="studentTableBody">
-                                    <!-- Populated dynamically -->
                                 </tbody>
                             </table>
                         </div>
@@ -382,7 +361,6 @@
                     </div>
                 </section>
 
-                <!-- ATTENDANCE SECTION -->
                 <section id="attendanceSection" class="content-section">
                     <div class="section-controls attendance-controls">
                         <div class="controls-left">
@@ -432,7 +410,6 @@
                         </div>
                     </div>
 
-                    <!-- Attendance Entry Table -->
                     <div class="table-card">
                         <div class="table-responsive">
                             <table class="data-table" id="attendanceTable">
@@ -446,7 +423,6 @@
                                     </tr>
                                 </thead>
                                 <tbody id="attendanceTableBody">
-                                    <!-- Populated dynamically -->
                                 </tbody>
                             </table>
                         </div>
@@ -474,7 +450,6 @@
                     </div>
                 </section>
 
-                <!-- REPORTS SECTION -->
                 <section id="reportsSection" class="content-section">
                     <div class="section-controls reports-controls">
                         <div class="controls-left">
@@ -516,7 +491,7 @@
                                     <input type="checkbox" id="defaulterToggle">
                                     <span class="switch-slider"></span>
                                 </label>
-                                <span class="switch-label">Defaulters Only (<75%)</span>
+                                <span class="switch-label">Defaulters Only (&lt;75%)</span>
                             </div>
                             <button class="btn btn-red" id="btnGenerateWarnings" style="display: none;">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
@@ -545,7 +520,6 @@
                         </div>
                     </div>
 
-                    <!-- Summary Stats Card Row -->
                     <div class="reports-summary-row" id="reportsSummaryRow">
                         <div class="report-stat-card">
                             <span class="report-stat-label">Total Days Conducted</span>
@@ -561,7 +535,6 @@
                         </div>
                     </div>
 
-                    <!-- Reports Data Table -->
                     <div class="table-card">
                         <div class="table-header-title">
                             <h3>Student-wise Aggregated Metrics</h3>
@@ -581,7 +554,6 @@
                                     </tr>
                                 </thead>
                                 <tbody id="reportTableBody">
-                                    <!-- Populated dynamically -->
                                 </tbody>
                             </table>
                         </div>
@@ -595,7 +567,6 @@
         </main>
     </div>
 
-    <!-- STUDENT MODAL (ADD / EDIT) -->
     <div class="modal-overlay" id="studentModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -609,7 +580,6 @@
             </div>
             <form id="studentForm" novalidate>
                 <div class="modal-body">
-                    <!-- Validation Error Summary -->
                     <div class="modal-error-summary" id="modalErrorSummary" style="display: none;">
                         Please fix the errors below to save changes.
                     </div>
@@ -668,7 +638,6 @@
         </div>
     </div>
 
-    <!-- CONFIRMATION MODAL -->
     <div class="modal-overlay" id="confirmModal">
         <div class="modal-card modal-sm">
             <div class="modal-header">
@@ -697,7 +666,6 @@
         </div>
     </div>
 
-    <!-- WARNING LETTER MODAL -->
     <div class="modal-overlay" id="warningLetterModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -710,7 +678,6 @@
                 </button>
             </div>
             <div class="modal-body warning-letter-print-area" id="warningLetterContent">
-                <!-- Letter content dynamically generated -->
             </div>
             <div class="modal-footer">
                 <span class="submit-summary-text" id="warningLetterIndex">Letter 1 of 1</span>
@@ -723,10 +690,8 @@
         </div>
     </div>
 
-    <!-- TOAST NOTIFICATION CONTAINER -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Script File -->
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,15 +1,6 @@
-/* 
-========================================================================
-   STUDENT ATTENDANCE MANAGEMENT SYSTEM (SAMS) - MASTER STYLE SHEET
-========================================================================
-*/
-
-/* --- Theme Variables & Root Tokens --- */
 :root {
-    /* Fonts */
     --font-primary: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-    /* Theme - Light Mode Defaults */
     --bg-primary: #f8fafc;
     --bg-secondary: #ffffff;
     --bg-tertiary: #f1f5f9;
@@ -28,27 +19,25 @@
     --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
     --shadow-overlay: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
 
-    /* Brand Colors */
-    --color-primary: #3b82f6;      /* Royal Blue */
+    --color-primary: #3b82f6;
     --color-primary-hover: #2563eb;
     --color-primary-light: rgba(59, 130, 246, 0.12);
     
-    --color-success: #10b981;      /* Emerald Green */
+    --color-success: #10b981;
     --color-success-hover: #059669;
     --color-success-light: rgba(16, 185, 129, 0.12);
 
-    --color-warning: #f59e0b;      /* Amber */
+    --color-warning: #f59e0b;
     --color-warning-hover: #d97706;
     --color-warning-light: rgba(245, 158, 11, 0.12);
 
-    --color-danger: #ef4444;       /* Coral Red */
+    --color-danger: #ef4444;
     --color-danger-hover: #dc2626;
     --color-danger-light: rgba(239, 68, 68, 0.12);
 
-    --color-indigo: #6366f1;       /* Indigo Accent */
+    --color-indigo: #6366f1;
     --color-indigo-light: rgba(99, 102, 241, 0.12);
 
-    /* UI Measurements */
     --sidebar-width: 260px;
     --sidebar-collapsed-width: 80px;
     --header-height: 80px;
@@ -59,7 +48,6 @@
     --transition-curve: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* --- Dark Theme Overrides --- */
 [data-theme="dark"] {
     --bg-primary: #090d16;
     --bg-secondary: #111827;
@@ -78,7 +66,6 @@
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
 }
 
-/* --- Global Reset & Reset Defaults --- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -109,7 +96,6 @@ input, button, select, textarea {
     outline: none;
 }
 
-/* Custom Scrollbars */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -125,7 +111,6 @@ input, button, select, textarea {
     background: var(--text-tertiary);
 }
 
-/* --- App Container Grid --- */
 .app-container {
     display: flex;
     min-height: 100vh;
@@ -133,7 +118,6 @@ input, button, select, textarea {
     position: relative;
 }
 
-/* --- Sidebar Navigation --- */
 .sidebar {
     width: var(--sidebar-width);
     background-color: var(--bg-secondary);
@@ -338,7 +322,6 @@ input, button, select, textarea {
     font-weight: 500;
 }
 
-/* --- Main Content Layout --- */
 .main-content {
     flex: 1;
     display: flex;
@@ -420,9 +403,7 @@ input, button, select, textarea {
     color: var(--text-secondary);
 }
 
-/* --- Content Body Sections --- */
 .content-body {
-    flex: 1;
     padding: 32px;
     overflow-y: auto;
 }
@@ -436,7 +417,6 @@ input, button, select, textarea {
     display: block;
 }
 
-/* --- Stats Cards Grid --- */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -518,7 +498,6 @@ input, button, select, textarea {
     text-overflow: ellipsis;
 }
 
-/* Circular Progress gauge in card */
 .circular-progress-container {
     position: relative;
     width: 80px;
@@ -544,7 +523,6 @@ input, button, select, textarea {
     color: var(--text-primary);
 }
 
-/* --- Dashboard Section Layout --- */
 .dashboard-grid {
     display: grid;
     grid-template-columns: 1.6fr 1fr;
@@ -590,7 +568,6 @@ input, button, select, textarea {
     border-top: 1px solid var(--border-color);
 }
 
-/* Quick Actions Style */
 .quick-actions-body {
     display: flex;
     flex-direction: column;
@@ -645,7 +622,6 @@ input, button, select, textarea {
     transform: translateX(4px);
 }
 
-/* Activity Logs */
 .log-body {
     padding: 0 24px 24px 24px;
     max-height: 230px;
@@ -704,7 +680,6 @@ input, button, select, textarea {
     margin-top: 3px;
 }
 
-/* Course Progress Bars */
 .courses-bars-container {
     display: flex;
     flex-direction: column;
@@ -758,7 +733,6 @@ input, button, select, textarea {
     transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* --- Section Controls Panel --- */
 .section-controls {
     display: flex;
     align-items: center;
@@ -839,7 +813,6 @@ input, button, select, textarea {
     border-color: var(--border-focus);
 }
 
-/* --- Buttons Design System --- */
 .btn {
     display: flex;
     align-items: center;
@@ -943,7 +916,6 @@ input, button, select, textarea {
     font-size: 15px;
 }
 
-/* --- Table Card Wrapper --- */
 .table-card {
     background-color: var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -972,7 +944,6 @@ input, button, select, textarea {
     overflow-x: auto;
 }
 
-/* Main Data Table */
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -1036,7 +1007,6 @@ input, button, select, textarea {
     font-weight: 500;
 }
 
-/* Empty Table State Placeholder */
 .empty-table-row td {
     text-align: center;
     padding: 48px 24px !important;
@@ -1068,7 +1038,6 @@ input, button, select, textarea {
     color: var(--text-tertiary);
 }
 
-/* --- Badges Styles --- */
 .badge {
     display: inline-flex;
     align-items: center;
@@ -1105,7 +1074,6 @@ input, button, select, textarea {
     color: var(--color-indigo);
 }
 
-/* --- Attendance Controls & Interface --- */
 .attendance-controls {
     flex-wrap: nowrap;
 }
@@ -1148,7 +1116,6 @@ input, button, select, textarea {
     align-items: center;
 }
 
-/* Attendance Radio-Toggle Pill Styling */
 .attendance-status-toggle {
     display: flex;
     align-items: center;
@@ -1176,7 +1143,6 @@ input, button, select, textarea {
     display: none;
 }
 
-/* Connect Labels to Checked states */
 .toggle-radio[value="Present"]:checked + .toggle-label {
     background-color: var(--color-success);
     color: var(--text-white);
@@ -1189,7 +1155,6 @@ input, button, select, textarea {
     box-shadow: var(--shadow-sm);
 }
 
-/* Attendance Overwrite Warning Alerts */
 .attendance-submit-footer {
     padding: 24px;
     border-top: 1px solid var(--border-color);
@@ -1231,7 +1196,6 @@ input, button, select, textarea {
     color: var(--text-secondary);
 }
 
-/* --- Analytics & Reports Filters --- */
 .reports-controls {
     flex-direction: column;
     align-items: stretch;
@@ -1308,7 +1272,6 @@ input, button, select, textarea {
     color: var(--color-indigo);
 }
 
-/* --- Modals Dialogs System --- */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -1404,7 +1367,6 @@ input, button, select, textarea {
     gap: 12px;
 }
 
-/* Modal Error alert block */
 .modal-error-summary {
     background-color: var(--color-danger-light);
     border: 1px solid rgba(239, 68, 68, 0.2);
@@ -1416,7 +1378,6 @@ input, button, select, textarea {
     margin-bottom: 20px;
 }
 
-/* Forms layout elements */
 .form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1476,7 +1437,6 @@ input, button, select, textarea {
     display: block;
 }
 
-/* Deletion Confirmation Dialog Details */
 .confirm-message-wrapper {
     display: flex;
     align-items: flex-start;
@@ -1495,7 +1455,6 @@ input, button, select, textarea {
     line-height: 1.5;
 }
 
-/* --- Toast Banners system --- */
 .toast-container {
     position: fixed;
     bottom: 24px;
@@ -1563,7 +1522,6 @@ input, button, select, textarea {
     color: var(--text-primary);
 }
 
-/* --- Animations Declarations --- */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
@@ -1580,7 +1538,6 @@ input, button, select, textarea {
     100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 
-/* --- Responsive Layout Breakpoints --- */
 @media (max-width: 1024px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
@@ -1681,8 +1638,6 @@ input, button, select, textarea {
     }
 }
 
-/* --- Additional Features: Defaulter, Trend Charts, print mode --- */
-
 .margin-bottom-24 {
     margin-bottom: 24px;
 }
@@ -1715,7 +1670,6 @@ input, button, select, textarea {
     overflow: visible;
 }
 
-/* SVG Chart details */
 .chart-axis-line {
     stroke: var(--border-color);
     stroke-width: 1;
@@ -1755,7 +1709,6 @@ input, button, select, textarea {
     stroke: var(--color-indigo);
 }
 
-/* Defaulters Switch Toggle styling */
 .defaulter-toggle-wrapper {
     display: flex;
     align-items: center;
@@ -1820,7 +1773,6 @@ input, button, select, textarea {
     white-space: nowrap;
 }
 
-/* Defaulter View Table overrides */
 .defaulter-view-active #reportTable thead th {
     background-color: var(--color-danger-light);
     color: var(--color-danger-hover);
@@ -1831,7 +1783,6 @@ input, button, select, textarea {
     background-color: rgba(239, 68, 68, 0.05);
 }
 
-/* --- Print Mode Styling --- */
 @media print {
     body {
         background-color: #ffffff !important;
@@ -1908,7 +1859,6 @@ input, button, select, textarea {
     }
 }
 
-/* --- Warning Letter Modal styling --- */
 .warning-letter-print-area {
     padding: 30px;
     background-color: #ffffff;
@@ -2003,7 +1953,6 @@ input, button, select, textarea {
     font-weight: bold;
 }
 
-/* Printing styling for warning letter modal active */
 @media print {
     body.print-letter-mode {
         background: white !important;
@@ -2051,8 +2000,6 @@ input, button, select, textarea {
         font-size: 12pt !important;
     }
 }
-
-/* --- SAMS Pagination, Live badges, and CTAs --- */
 
 .pagination-controls {
     display: flex;
