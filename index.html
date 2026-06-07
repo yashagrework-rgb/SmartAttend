@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartAttend - Student Attendance Management System</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                    </svg>
+                    <span class="logo-text">Smart<span class="text-accent">Attend</span></span>
+                </div>
+                <button class="btn-icon mobile-close-btn" id="mobileCloseBtn" aria-label="Close Menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="9"></rect>
+                                <rect x="14" y="3" width="7" height="5"></rect>
+                                <rect x="14" y="12" width="7" height="9"></rect>
+                                <rect x="3" y="16" width="7" height="5"></rect>
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#students" class="nav-link" data-section="students">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <span>Student Directory</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#attendance" class="nav-link" data-section="attendance">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <span>Mark Attendance</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#reports" class="nav-link" data-section="reports">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                            <span>Analytics & Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="theme-toggle-btn" id="themeToggleBtn">
+                    <div class="toggle-icon-wrapper">
+                        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </div>
+                    <span id="themeToggleText">Dark Mode</span>
+                </button>
+                <button class="theme-toggle-btn" id="btnResetDatabase" style="margin-top: 4px; border-color: rgba(239, 68, 68, 0.2); background-color: rgba(239, 68, 68, 0.05); color: var(--color-danger);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; color: var(--color-danger);">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                    </svg>
+                    <span>Reset Database</span>
+                </button>
+                <div class="user-profile">
+                    <div class="avatar">AD</div>
+                    <div class="user-info">
+                        <span class="user-name">Admin Department</span>
+                        <span class="user-role">BCA Coordinator</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div class="header-left">
+                    <button class="btn-icon mobile-menu-btn" id="mobileMenuBtn" aria-label="Open Menu">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <div class="greeting-wrapper">
+                        <h1 class="header-title" id="pageTitle">Dashboard</h1>
+                        <p class="header-subtitle" id="currentDateDisplay">Sunday, June 7, 2026</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="sync-indicator">
+                        <span class="sync-dot"></span>
+                        <span class="sync-text">Local Storage Active</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Body (Dynamic Sections) -->
+            <div class="content-body">
+                
+                <!-- DASHBOARD SECTION -->
+                <section id="dashboardSection" class="content-section active">
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon-wrapper bg-blue-light text-blue">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-label">Total Students</span>
+                                <h3 class="stat-value" id="dashTotalStudents">0</h3>
+                                <span class="stat-subtext">Registered in database</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon-wrapper bg-green-light text-green">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-label">Present Today</span>
+                                <h3 class="stat-value" id="dashPresentToday">0</h3>
+                                <span class="stat-subtext" id="dashPresentDate">June 7, 2026</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon-wrapper bg-red-light text-red">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                </svg>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-label">Absent Today</span>
+                                <h3 class="stat-value" id="dashAbsentToday">0</h3>
+                                <span class="stat-subtext" id="dashAbsentDate">June 7, 2026</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="circular-progress-container">
+                                <svg class="progress-ring" width="80" height="80">
+                                    <circle class="progress-ring-circle-bg" stroke="var(--bg-tertiary)" stroke-width="6" fill="transparent" r="34" cx="40" cy="40"/>
+                                    <circle class="progress-ring-circle" id="dashProgressCircle" stroke="var(--color-primary)" stroke-width="6" fill="transparent" r="34" cx="40" cy="40" stroke-dasharray="213.6" stroke-dashoffset="213.6"/>
+                                </svg>
+                                <div class="percentage-overlay" id="dashPercentageText">0%</div>
+                            </div>
+                            <div class="stat-details">
+                                <span class="stat-label">Attendance Rate</span>
+                                <h3 class="stat-value" id="dashPercentage">0%</h3>
+                                <span class="stat-subtext">Cumulative average</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Core Grid -->
+                    <div class="dashboard-grid">
+                        <!-- Left Panel: Quick Links & Summary Charts -->
+                        <div class="dashboard-left-column">
+                            <!-- Trend Chart Card -->
+                            <div class="dashboard-card main-panel margin-bottom-24">
+                                <div class="card-header">
+                                    <h2 class="card-title">5-Day Attendance Trend Analysis</h2>
+                                    <span class="badge badge-blue">Dynamic Trend</span>
+                                </div>
+                                <div class="card-body chart-card-body">
+                                    <p class="card-desc">Daily attendance fluctuations over the last 5 active registry dates.</p>
+                                    <div class="chart-container" id="trendChartContainer">
+                                        <!-- SVG Chart will be injected here -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Course Bars Card -->
+                            <div class="dashboard-card main-panel">
+                                <div class="card-header">
+                                    <h2 class="card-title">Course Enrollment & Attendance Summary</h2>
+                                    <span class="badge badge-indigo">Visual analytics</span>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-desc">Visual distribution of average attendance rates and enrollment counts across active college courses.</p>
+                                    <div class="courses-bars-container" id="coursesBarContainer">
+                                        <!-- Dynamic Course Bars will go here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Quick Actions & Log -->
+                        <div class="dashboard-card side-panel">
+                            <div class="card-header">
+                                <h2 class="card-title">Quick Actions</h2>
+                            </div>
+                            <div class="card-body quick-actions-body">
+                                <button class="action-btn btn-primary" onclick="window.location.hash='#attendance'; triggerNav('attendance');">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="action-icon">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    </svg>
+                                    <span>Take Attendance</span>
+                                </button>
+                                <button class="action-btn btn-success" id="btnQuickAddStudent">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="action-icon">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <line x1="19" y1="8" x2="19" y2="14"></line>
+                                        <line x1="16" y1="11" x2="22" y2="11"></line>
+                                    </svg>
+                                    <span>Add New Student</span>
+                                </button>
+                                <button class="action-btn btn-warning" onclick="window.location.hash='#reports'; triggerNav('reports');">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="action-icon">
+                                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                                    </svg>
+                                    <span>Export CSV Report</span>
+                                </button>
+                            </div>
+
+                            <div class="card-header border-top">
+                                <h2 class="card-title">Recent Activity Logs</h2>
+                            </div>
+                            <div class="card-body log-body">
+                                <div class="activity-log" id="recentActivityLog">
+                                    <!-- Logs populated dynamically -->
+                                    <div class="log-item empty">No recent actions recorded.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- STUDENTS SECTION -->
+                <section id="studentsSection" class="content-section">
+                    <div class="section-controls">
+                        <!-- Search and Filter panel -->
+                        <div class="controls-left">
+                            <div class="search-box-wrapper">
+                                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                                <input type="text" id="studentSearchInput" placeholder="Search by name or roll number...">
+                            </div>
+                            
+                            <div class="filter-dropdowns">
+                                <select id="studentFilterCourse" class="filter-select">
+                                    <option value="">All Courses</option>
+                                    <option value="BCA">BCA</option>
+                                    <option value="BBA">BBA</option>
+                                    <option value="B.Tech">B.Tech</option>
+                                    <option value="B.Sc">B.Sc</option>
+                                </select>
+                                
+                                <select id="studentFilterSemester" class="filter-select">
+                                    <option value="">All Semesters</option>
+                                    <option value="I">I Sem</option>
+                                    <option value="II">II Sem</option>
+                                    <option value="III">III Sem</option>
+                                    <option value="IV">IV Sem</option>
+                                    <option value="V">V Sem</option>
+                                    <option value="VI">VI Sem</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="controls-right">
+                            <button class="btn btn-secondary" id="btnExportCSVTemplate" title="Download CSV Import Template">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                <span>Template</span>
+                            </button>
+                            
+                            <button class="btn btn-secondary" id="btnImportCSVStudents">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                <span>Import CSV</span>
+                            </button>
+                            <input type="file" id="studentCSVInput" accept=".csv" style="display: none;">
+                            
+                            <button class="btn btn-primary" id="btnAddNewStudent">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                <span>Add Student</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Student List Directory Table -->
+                    <div class="table-card">
+                        <div class="table-responsive">
+                            <table class="data-table" id="studentTable">
+                                <thead>
+                                    <tr>
+                                        <th>Roll Number</th>
+                                        <th>Full Name</th>
+                                        <th>Course</th>
+                                        <th>Semester</th>
+                                        <th>Email Address</th>
+                                        <th class="text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="studentTableBody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-footer">
+                            <span class="table-summary-text" id="studentTableSummary">Showing 0 of 0 students</span>
+                            <div class="pagination-controls" id="studentPagination">
+                                <button class="btn btn-secondary btn-sm" id="btnStudentPrevPage">Prev</button>
+                                <span class="pagination-info" id="studentPageInfo">Page 1 of 1</span>
+                                <button class="btn btn-secondary btn-sm" id="btnStudentNextPage">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ATTENDANCE SECTION -->
+                <section id="attendanceSection" class="content-section">
+                    <div class="section-controls attendance-controls">
+                        <div class="controls-left">
+                            <div class="date-selector">
+                                <label for="attendanceDatePicker" class="input-label-inline">Attendance Date:</label>
+                                <div class="date-input-wrapper">
+                                    <input type="date" id="attendanceDatePicker">
+                                </div>
+                            </div>
+                            <div class="attendance-meta-info" id="attendanceMetaInfo">
+                                <span class="badge badge-warning" id="attendanceStatusBadge">Not Saved</span>
+                            </div>
+                        </div>
+                        <div class="controls-right">
+                            <button class="btn btn-secondary" id="btnMarkAllPresent">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon text-green">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>All Present</span>
+                            </button>
+                            <button class="btn btn-secondary" id="btnMarkAllAbsent">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon text-red">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                                <span>All Absent</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Attendance Entry Table -->
+                    <div class="table-card">
+                        <div class="table-responsive">
+                            <table class="data-table" id="attendanceTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 15%">Roll Number</th>
+                                        <th style="width: 35%">Full Name</th>
+                                        <th style="width: 15%">Course</th>
+                                        <th style="width: 15%">Semester</th>
+                                        <th style="width: 20%" class="text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="attendanceTableBody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="attendance-submit-footer">
+                            <div class="warning-alert-bar" id="attendanceConflictWarning" style="display: none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="warning-alert-icon">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                                <span>Attendance records already exist for this date. Saving will overwrite the previous logs.</span>
+                            </div>
+                            <div class="submit-actions">
+                                <span class="submit-summary-text" id="attendanceSubmitCount">0 / 0 marked</span>
+                                <button class="btn btn-primary btn-lg" id="btnSaveAttendance">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                        <polyline points="7 3 7 8 15 8"></polyline>
+                                    </svg>
+                                    <span>Save Attendance Registry</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- REPORTS SECTION -->
+                <section id="reportsSection" class="content-section">
+                    <div class="section-controls reports-controls">
+                        <div class="controls-left">
+                            <div class="report-filters">
+                                <div class="date-selector-range">
+                                    <div class="range-field">
+                                        <label for="reportStartDate" class="input-label-inline">From:</label>
+                                        <input type="date" id="reportStartDate">
+                                    </div>
+                                    <div class="range-field">
+                                        <label for="reportEndDate" class="input-label-inline">To:</label>
+                                        <input type="date" id="reportEndDate">
+                                    </div>
+                                </div>
+                                <div class="filter-dropdowns">
+                                    <select id="reportFilterCourse" class="filter-select">
+                                        <option value="">All Courses</option>
+                                        <option value="BCA">BCA</option>
+                                        <option value="BBA">BBA</option>
+                                        <option value="B.Tech">B.Tech</option>
+                                        <option value="B.Sc">B.Sc</option>
+                                    </select>
+                                    
+                                    <select id="reportFilterSemester" class="filter-select">
+                                        <option value="">All Semesters</option>
+                                        <option value="I">I Sem</option>
+                                        <option value="II">II Sem</option>
+                                        <option value="III">III Sem</option>
+                                        <option value="IV">IV Sem</option>
+                                        <option value="V">V Sem</option>
+                                        <option value="VI">VI Sem</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="controls-right">
+                            <div class="defaulter-toggle-wrapper">
+                                <label class="switch-container">
+                                    <input type="checkbox" id="defaulterToggle">
+                                    <span class="switch-slider"></span>
+                                </label>
+                                <span class="switch-label">Defaulters Only (<75%)</span>
+                            </div>
+                            <button class="btn btn-red" id="btnGenerateWarnings" style="display: none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                                <span>Simulate Warnings</span>
+                            </button>
+                            <button class="btn btn-secondary" id="btnPrintReport">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                                    <rect x="6" y="14" width="12" height="8"></rect>
+                                </svg>
+                                <span>Print List</span>
+                            </button>
+                            <button class="btn btn-warning" id="btnExportCSV">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                <span>Export Report (CSV)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Summary Stats Card Row -->
+                    <div class="reports-summary-row" id="reportsSummaryRow">
+                        <div class="report-stat-card">
+                            <span class="report-stat-label">Total Days Conducted</span>
+                            <span class="report-stat-value" id="reportTotalDays">0</span>
+                        </div>
+                        <div class="report-stat-card">
+                            <span class="report-stat-label">Total Registrations</span>
+                            <span class="report-stat-value" id="reportTotalStudents">0</span>
+                        </div>
+                        <div class="report-stat-card">
+                            <span class="report-stat-label">Avg Attendance Rate</span>
+                            <span class="report-stat-value text-accent" id="reportAvgRate">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Reports Data Table -->
+                    <div class="table-card">
+                        <div class="table-header-title">
+                            <h3>Student-wise Aggregated Metrics</h3>
+                            <span class="badge badge-blue" id="reportMetaSubtitle">Showing metrics for all dates</span>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table" id="reportTable">
+                                <thead>
+                                    <tr>
+                                        <th>Roll Number</th>
+                                        <th>Full Name</th>
+                                        <th>Course & Sem</th>
+                                        <th class="text-center">Lectures Present</th>
+                                        <th class="text-center">Lectures Absent</th>
+                                        <th class="text-center">Total Classes</th>
+                                        <th class="text-right">Attendance Rate</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reportTableBody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-footer">
+                            <span class="table-summary-text" id="reportTableSummary">Showing 0 student records</span>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- STUDENT MODAL (ADD / EDIT) -->
+    <div class="modal-overlay" id="studentModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Add New Student</h3>
+                <button class="btn-icon close-modal-btn" id="closeModalBtn" aria-label="Close modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <form id="studentForm" novalidate>
+                <div class="modal-body">
+                    <!-- Validation Error Summary -->
+                    <div class="modal-error-summary" id="modalErrorSummary" style="display: none;">
+                        Please fix the errors below to save changes.
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="studentRoll" class="form-label">Roll Number <span class="required">*</span></label>
+                            <input type="text" id="studentRoll" name="roll" class="form-input" placeholder="e.g. BCA-2026-001" required>
+                            <span class="form-error-msg" id="errorRoll">Roll number is required.</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="studentName" class="form-label">Full Name <span class="required">*</span></label>
+                            <input type="text" id="studentName" name="name" class="form-input" placeholder="e.g. Aarav Sharma" required>
+                            <span class="form-error-msg" id="errorName">Full name is required.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="studentCourse" class="form-label">Course <span class="required">*</span></label>
+                            <select id="studentCourse" name="course" class="form-input" required>
+                                <option value="">Select Course</option>
+                                <option value="BCA">BCA</option>
+                                <option value="BBA">BBA</option>
+                                <option value="B.Tech">B.Tech</option>
+                                <option value="B.Sc">B.Sc</option>
+                            </select>
+                            <span class="form-error-msg" id="errorCourse">Please select a course.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="studentSemester" class="form-label">Semester <span class="required">*</span></label>
+                            <select id="studentSemester" name="semester" class="form-input" required>
+                                <option value="">Select Semester</option>
+                                <option value="I">I Semester</option>
+                                <option value="II">II Semester</option>
+                                <option value="III">III Semester</option>
+                                <option value="IV">IV Semester</option>
+                                <option value="V">V Semester</option>
+                                <option value="VI">VI Semester</option>
+                            </select>
+                            <span class="form-error-msg" id="errorSemester">Please select a semester.</span>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="studentEmail" class="form-label">Email Address <span class="required">*</span></label>
+                            <input type="email" id="studentEmail" name="email" class="form-input" placeholder="e.g. aarav@college.edu" required>
+                            <span class="form-error-msg" id="errorEmail">Please enter a valid email address.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btnCancelStudent">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmitStudent">Save Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CONFIRMATION MODAL -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-card modal-sm">
+            <div class="modal-header">
+                <h3 class="modal-title text-red">Confirm Deletion</h3>
+                <button class="btn-icon close-modal-btn" id="closeConfirmBtn" aria-label="Close modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="confirm-message-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="confirm-warning-icon text-red">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    <p id="confirmModalMsg">Are you sure you want to delete this student? This action will permanently remove all student details and attendance logs associated with them.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btnCancelConfirm">Cancel</button>
+                <button type="button" class="btn btn-red" id="btnYesConfirm">Delete Permanent</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WARNING LETTER MODAL -->
+    <div class="modal-overlay" id="warningLetterModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title text-red">Simulated Attendance Warning Letter</h3>
+                <button class="btn-icon close-modal-btn" id="closeWarningLetterBtn" aria-label="Close modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body warning-letter-print-area" id="warningLetterContent">
+                <!-- Letter content dynamically generated -->
+            </div>
+            <div class="modal-footer">
+                <span class="submit-summary-text" id="warningLetterIndex">Letter 1 of 1</span>
+                <div style="display:flex; gap:8px;">
+                    <button type="button" class="btn btn-secondary" id="btnPrevWarning">Previous</button>
+                    <button type="button" class="btn btn-secondary" id="btnNextWarning">Next</button>
+                    <button type="button" class="btn btn-red" id="btnPrintWarning">Print Letter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Script File -->
+    <script src="script.js"></script>
+</body>
+</html>
