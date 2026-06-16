@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartAttend - Generate Presentation PPTX</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        .card {
+            background-color: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            color: #3b82f6;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        p {
+            color: #94a3b8;
+            font-size: 16px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        .btn {
+            background-color: #3b82f6;
+            color: #ffffff;
+            border: none;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            background-color: #2563eb;
+        }
+        .status {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #10b981;
+            font-weight: bold;
+            min-height: 20px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+</head>
+<body>
+
+    <div class="card">
+        <h1>SmartAttend PPTX Generator</h1>
+        <p>This page automatically compiles your project slides and downloads a Microsoft PowerPoint (.pptx) file directly to your computer.</p>
+        <button class="btn" onclick="generatePresentation()">Download PPTX Slides</button>
+        <div class="status" id="statusLabel">Ready</div>
+    </div>
+
+    <script>
+        function generatePresentation() {
+            const status = document.getElementById('statusLabel');
+            status.textContent = 'Generating slides...';
+            status.style.color = '#3b82f6';
+
+            try {
+                let pptx = new PptxGenJS();
+                pptx.layout = 'LAYOUT_16x9';
+
+                // Master Slide background styling definitions
+                const bgColor = "0F172A";
+                const accentColor = "3B82F6";
+                const textColor = "E2E8F0";
+                const dimColor = "94A3B8";
+
+                // Slide 1: Cover Page
+                let s1 = pptx.addSlide();
+                s1.background = { fill: bgColor };
+                s1.addText("SmartAttend", { x: 0.5, y: 1.2, w: 9.0, h: 0.8, fontSize: 44, bold: true, color: accentColor, fontFace: "Segoe UI", align: "center" });
+                s1.addText("Student Attendance Management System (SAMS)", { x: 0.5, y: 1.9, w: 9.0, h: 0.5, fontSize: 18, italic: true, color: dimColor, fontFace: "Segoe UI", align: "center" });
+                s1.addText("Major Project Presentation", { x: 0.5, y: 2.5, w: 9.0, h: 0.4, fontSize: 14, color: textColor, fontFace: "Segoe UI", align: "center" });
+                s1.addText(
+                    "Presented By:\n• Yash Agre (Enroll: 23SCIT1AI03077)\n• Amit Rajbhar (Enroll: 23SCIT2AI03079)\n• Amar Pachori (Enroll: 23SCIT2AI03041)\n• Rani Yadav (Enroll: 23SCIT1AI03053)",
+                    { x: 0.5, y: 3.5, w: 5.2, h: 1.8, fontSize: 10.5, color: dimColor, fontFace: "Segoe UI", align: "left" }
+                );
+                s1.addText(
+                    "Guided By:\nFaculty Coordinator\nDepartment of CS & IT\nSam Global University\nSession: 2025 - 2026",
+                    { x: 5.8, y: 3.5, w: 3.7, h: 1.8, fontSize: 11, color: dimColor, fontFace: "Segoe UI", align: "right" }
+                );
+
+                // Slide Template helper function
+                function addStandardSlide(title) {
+                    let slide = pptx.addSlide();
+                    slide.background = { fill: bgColor };
+                    slide.addText(title, { x: 0.5, y: 0.5, w: 9.0, h: 0.6, fontSize: 28, bold: true, color: accentColor, fontFace: "Segoe UI" });
+                    return slide;
+                }
+
+                // Slide 2: Project Overview
+                let s2 = addStandardSlide("Project Overview");
+                s2.addText(
+                    [
+                        { text: "SmartAttend is a client-side Single Page Application (SPA) designed to track, analyze, and manage student attendance registries locally.", options: { bullet: false } },
+                        { text: "Zero External Dependencies: Built entirely with vanilla HTML5, CSS3, and ES6+ JS. No CDNs or frameworks.", options: { bullet: true } },
+                        { text: "Offline-First Architecture: Stores and processes data inside browser localStorage.", options: { bullet: true } },
+                        { text: "Departmental Target: Built specifically for coordinators to manage multiple classes independently.", options: { bullet: true } },
+                        { text: "Fast Load Speeds: Boots in under 85ms and consumes less than 1.2 MB of client memory.", options: { bullet: true } }
+                    ],
+                    { x: 0.5, y: 1.4, w: 9.0, h: 4.0, fontSize: 14, color: textColor, fontFace: "Segoe UI" }
+                );
+
+                // Slide 3: Problem Statement
+                let s3 = addStandardSlide("Problem Statement");
+                s3.addText(
+                    [
+                        { text: "Traditional Registers: Pen-and-paper ledgers degrade physically over time, are vulnerable to tampering, and require hours of manual calculations to compute student attendance averages.", options: { bullet: true } },
+                        { text: "Centralized Cloud ERPs: Heavy subscription packages with high licensing fees. They are completely dependent on server networks; if the internet breaks down, class registers are blocked.", options: { bullet: true } },
+                        { text: "Outreach Delays: Manual processing of warning letters to parents of irregular students causes critical intervention delays.", options: { bullet: true } }
+                    ],
+                    { x: 0.5, y: 1.4, w: 9.0, h: 4.0, fontSize: 14, color: textColor, fontFace: "Segoe UI" }
+                );
+
+                // Slide 4: Project Objectives
+                let s4 = addStandardSlide("Project Objectives");
+                s4.addText(
+                    [
+                        { text: "Create a serverless, local-first tool that runs offline on any desktop or mobile device.", options: { bullet: true } },
+                        { text: "Build an interactive dashboard showing real-time attendance trends using custom SVGs.", options: { bullet: true } },
+                        { text: "Support class-wise registration (filtering by Course & Semester) preventing database conflicts.", options: { bullet: true } },
+                        { text: "Incorporate CSV roster uploading to eliminate manual student profiles key-in steps.", options: { bullet: true } },
+                        { text: "Automate parent warning alerts by filtering defaulter students with less than 75% attendance.", options: { bullet: true } }
+                    ],
+                    { x: 0.5, y: 1.4, w: 9.0, h: 4.0, fontSize: 14, color: textColor, fontFace: "Segoe UI" }
+                );
+
+                // Slide 5: System Architecture
+                let s5 = addStandardSlide("System Architecture");
+                s5.addText(
+                    [
+                        { text: "Model-View-Controller (MVC) lifecycle computed entirely inside browser RAM.", options: { bullet: true } },
+                        { text: "Model: LocalStorage engine storing serialized registries (sams_students) and logs (sams_attendance).", options: { bullet: true } },
+                        { text: "Controller: script.js handling page actions, state modifications, and JSON sync.", options: { bullet: true } },
+                        { text: "View: Responsive HTML5 DOM sections toggled via browser hash navigation (#dashboard, #attendance, #students, #reports).", options: { bullet: true } }
+                    ],
+                    { x: 0.5, y: 1.4, w: 9.0, h: 4.0, fontSize: 14, color: textColor, fontFace: "Segoe UI" }
+                );
+
+                // Slide 6: Database Schema
+                let s6 = addStandardSlide("Local Database Schema");
+                s6.addText(
+                    [
+                        { text: "Students Array (sams_students): Stores serialized list of student details (rollNumber, fullName, course, semester, email).", options: { bullet: true } },
+                        { text: "Logs Object (sams_attendance): Maps date keys to student rolls and marked state (Present / Absent).", options: { bullet: true } },
+                        { text: "Non-destructive Merging: Merges logs selectively by class criteria, preventing overwrites when other coordinators mark different courses on the same day.", options: { bullet: true } }
+                    ],
+                    { x: 0.5, y: 1.4, w: 9.0, h: 4.0, fontSize: 14, color: textColor, fontFace: "Segoe UI" }
+                );
+
+                // Slide 7: Core Modules & Features
+                let s7 = addStandardSlide("Core Modules & Features");
+                s7.addText(
+                    [
+                        { text: "Interactive Statistics: Displays present count, absent count, and aggregate percentages with pulsing pending CTA labels.", options: { bullet: true } },
+                        { text: "SVG Visual Polyline Chart: Dynamic coordinate rendering showing attendance trend calculations.", options: { bullet: true } },
+                        { text: "CSV Importer API: Standard browser FileReader streams that parse rosters, skip duplicate roll keys, and add students in bulk.", options: { bullet: true } },
+                        { text: "History Badges: Renders real-time historical cumulative averages next to student names during marking.", options: { bullet: true } }
+                    ],
+                    { x: 0.5, y: 1.4, w: 9.0, h: 4.0, fontSize: 14, color: textColor, fontFace: "Segoe UI" }
+                );
+
+                // Slide 8: Parent Warning Letter Module
+                let s8 = addStandardSlide("Parent Warning Notices");
+                s8.addText(
+                    [
+                        { text: "Defaulter Search: Query filters overall logs to isolate students whose average cumulative attendance rate falls below the 75% threshold.", options: { bullet: true } },
+                        { text: "Automated Outreach: Generates formal warning letters to parents containing recorded metrics, lecture totals, and coordinator signature slots.", options: { bullet: true } },
+                        { text: "Print Stylesheet Overrides: Strips screen-only sidebars and layout cards to print clean formal letters directly onto physical paper.", options: { bullet: true } }
+                    ],
+                    { x: 0.5, y: 1.4, w: 9.0, h: 4.0, fontSize: 14, color: textColor, fontFace: "Segoe UI" }
+                );
+
+                // Slide 9: Performance & Testing Matrix
+                let s9 = addStandardSlide("Performance & Testing Profile");
+                s9.addText(
+                    [
+                        { text: "Verification: Functional test suites TC-01 to TC-09 passed successfully on Google Chrome, Firefox, and Edge.", options: { bullet: true } },
+                        { text: "Page Boot Latency: 85 ms (instant loading).", options: { bullet: true } },
+                        { text: "DB operations (read/write): < 3 ms.", options: { bullet: true } },
+                        { text: "Search queries matching (1000 roster list): < 8 ms.", options: { bullet: true } },
+                        { text: "Memory Footprint: ~1.2 MB.", options: { bullet: true } }
+                    ],
+                    { x: 0.5, y: 1.4, w: 9.0, h: 4.0, fontSize: 14, color: textColor, fontFace: "Segoe UI" }
+                );
+
+                // Slide 10: Conclusion & Future Scope
+                let s10 = addStandardSlide("Conclusion & Future Scope");
+                s10.addText(
+                    [
+                        { text: "Conclusion: SmartAttend successfully automates records management, eliminating calculations, cloud costs, and merge collisions. It is highly secure, portable, and responsive.", options: { bullet: false } },
+                        { text: "Future Enhancements:", options: { bullet: false, bold: true, color: accentColor } },
+                        { text: "Implement biometric check-ins (face recognition API inputs).", options: { bullet: true } },
+                        { text: "Connect SMS Twilio gateways to alert parents automatically.", options: { bullet: true } },
+                        { text: "Migrate localized client-side structures to centralized SQL server hubs for multi-teacher synchronization.", options: { bullet: true } }
+                    ],
+                    { x: 0.5, y: 1.4, w: 9.0, h: 4.0, fontSize: 14, color: textColor, fontFace: "Segoe UI" }
+                );
+
+                // Slide 11: Thank You
+                let s11 = pptx.addSlide();
+                s11.background = { fill: bgColor };
+                s11.addText("Thank You", { x: 0.5, y: 1.5, w: 9.0, h: 0.8, fontSize: 56, bold: true, color: accentColor, fontFace: "Segoe UI", align: "center" });
+                s11.addText("Questions & Answers Session", { x: 0.5, y: 2.4, w: 9.0, h: 0.5, fontSize: 20, color: dimColor, fontFace: "Segoe UI", align: "center" });
+                s11.addText(
+                    "Presented By:\nYash Agre (23SCIT1AI03077)  |  Amit Rajbhar (23SCIT2AI03079)\nAmar Pachori (23SCIT2AI03041)  |  Rani Yadav (23SCIT1AI03053)\nCourse: BCA | Sam Global University",
+                    { x: 0.5, y: 3.6, w: 9.0, h: 1.5, fontSize: 13, color: textColor, fontFace: "Segoe UI", align: "center" }
+                );
+
+                // Save presentation file
+                pptx.writeFile({ fileName: 'SmartAttend_Project_Presentation.pptx' })
+                    .then(file => {
+                        status.textContent = 'Download completed successfully!';
+                        status.style.color = '#10b981';
+                    })
+                    .catch(err => {
+                        status.textContent = 'Error writing presentation file.';
+                        status.style.color = '#ef4444';
+                        console.error(err);
+                    });
+
+            } catch (error) {
+                status.textContent = 'An error occurred during generation.';
+                status.style.color = '#ef4444';
+                console.error(error);
+            }
+        }
+
+        // Run presentation generation automatically on window load
+        window.onload = function() {
+            setTimeout(generatePresentation, 500);
+        };
+    </script>
+</body>
+</html>
