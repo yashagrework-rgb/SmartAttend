@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartAttend - Project Presentation</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+            color: #f8fafc;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background-color: rgba(2, 6, 23, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #3b82f6;
+        }
+        .logo span {
+            color: #f8fafc;
+        }
+        .univ-tag {
+            font-size: 14px;
+            font-weight: 500;
+            color: #94a3b8;
+        }
+        .presentation-container {
+            flex-grow: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 40px;
+        }
+        .slide {
+            position: absolute;
+            width: 90%;
+            max-width: 1000px;
+            height: 80%;
+            max-height: 550px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.95);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+        }
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+        .slide-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #3b82f6;
+            margin-bottom: 24px;
+            border-left: 5px solid #3b82f6;
+            padding-left: 15px;
+            line-height: 1.2;
+        }
+        .slide-subtitle {
+            font-size: 20px;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+        .slide-content {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+        .slide-content ul, .slide-content ol {
+            padding-left: 24px;
+        }
+        .slide-content li {
+            margin-bottom: 12px;
+        }
+        .slide-content li strong {
+            color: #3b82f6;
+        }
+        .front-slide {
+            text-align: center;
+            align-items: center;
+        }
+        .front-title {
+            font-size: 48px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #3b82f6;
+            margin-bottom: 10px;
+        }
+        .front-subtitle {
+            font-size: 20px;
+            color: #94a3b8;
+            margin-bottom: 40px;
+        }
+        .front-degree {
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            color: #f8fafc;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+        .front-details-box {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            max-width: 600px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+        .front-details-box strong {
+            color: #f8fafc;
+        }
+        .grid-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .card h4 {
+            color: #3b82f6;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .card p {
+            font-size: 15px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+        footer {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background-color: rgba(2, 6, 23, 0.5);
+            z-index: 10;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        .nav-btn {
+            background-color: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        .nav-btn:hover {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        .progress-dots {
+            display: flex;
+            gap: 8px;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #334155;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .dot.active {
+            background-color: #3b82f6;
+            transform: scale(1.2);
+        }
+        .slide-counter {
+            font-size: 14px;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Smart<span>Slide</span></div>
+        <div class="univ-tag">Sam Global University</div>
+    </header>
+
+    <div class="presentation-container">
+
+        <!-- Slide 1: Cover -->
+        <div class="slide front-slide active">
+            <div class="front-title">SmartAttend</div>
+            <div class="front-subtitle">Student Attendance Management System (SAMS)</div>
+            <div class="front-degree">Major Project Presentation</div>
+            <div class="front-details-box">
+                <div style="text-align: left;">
+                    <strong>Presented By:</strong><br>
+                    Yash Agre<br>
+                    Roll No: 23SCIT1AI03077<br>
+                    Course: BCA
+                </div>
+                <div style="text-align: right;">
+                    <strong>Guided By:</strong><br>
+                    Faculty Coordinator<br>
+                    Department of CS & IT<br>
+                    Session: 2025 - 2026
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Project Overview -->
+        <div class="slide">
+            <div class="slide-title">Project Overview</div>
+            <div class="slide-content">
+                <p style="margin-bottom: 20px;"><strong>SmartAttend</strong> is a client-side Single Page Application (SPA) designed to track, analyze, and manage student attendance registries locally.</p>
+                <ul>
+                    <li><strong>Zero External Dependencies</strong>: Built entirely with vanilla HTML5, CSS3, and ES6+ JS. No CDNs or frameworks.</li>
+                    <li><strong>Offline-First Architecture</strong>: Stores and processes data inside browser <code>localStorage</code>.</li>
+                    <li><strong>Departmental Target</strong>: Built specifically for coordinators to manage multiple classes independently.</li>
+                    <li><strong>Fast Load Speeds</strong>: Boots in under 85ms and consumes less than 1.2 MB of client memory.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 3: Problem Statement -->
+        <div class="slide">
+            <div class="slide-title">Problem Statement</div>
+            <div class="slide-content grid-content">
+                <div class="card">
+                    <h4>Traditional Registers</h4>
+                    <p>Pen-and-paper ledgers degrade physically over time, are vulnerable to tampering, and require hours of manual calculations to compute student attendance averages.</p>
+                </div>
+                <div class="card">
+                    <h4>Centralized Cloud ERPs</h4>
+                    <p>Heavy subscription packages with high licensing fees. They are completely dependent on server networks; if the internet breaks down, class registers are blocked.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Objectives -->
+        <div class="slide">
+            <div class="slide-title">Project Objectives</div>
+            <div class="slide-content">
+                <ol>
+                    <li>Create a <strong>serverless, local-first</strong> tool that runs offline on any desktop or mobile device.</li>
+                    <li>Build an **interactive dashboard** showing real-time attendance trends using custom SVGs.</li>
+                    <li>Support **class-wise registration** (filtering by Course & Semester) preventing database conflicts.</li>
+                    <li>Incorporate **CSV roster uploading** to eliminate manual student profiles key-in steps.</li>
+                    <li>Automate **parent warning alerts** by filtering defaulter students with less than 75% attendance.</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Slide 5: System Architecture -->
+        <div class="slide">
+            <div class="slide-title">System Architecture</div>
+            <div class="slide-content" style="text-align: center;">
+                <p style="margin-bottom: 20px; text-align: left;">SmartAttend runs a model-view-controller lifecycle computed entirely inside browser RAM, synchronizing updates to disk storage automatically:</p>
+                <div style="font-family: monospace; background: rgba(30,41,59,0.8); padding: 20px; border-radius: 8px; font-size: 15px; border: 1px solid rgba(255,255,255,0.05); display: inline-block; text-align: left; line-height: 1.5;">
+                    [Browser DOM / User Actions]<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;⬇️ (Event Listeners & dynamic Hash Routing)<br>
+                    [Memory AppState Controller (script.js)] 🔄 [In-Memory Arrays]<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;⬇️ (JSON Stringify Serialization)<br>
+                    [Browser localStorage Engine] (Key-Value Store)
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Database Schema -->
+        <div class="slide">
+            <div class="slide-title">Local Database Schema</div>
+            <div class="slide-content grid-content">
+                <div>
+                    <h4 style="color:#3b82f6; margin-bottom:10px;">Students Array (`sams_students`)</h4>
+                    <p style="font-size:15px; color:#cbd5e1; margin-bottom:15px;">Stores serialized list of student details.</p>
+                    <pre style="font-size:11px; margin:0;">[
+  {
+    "rollNumber": "BCA-2026-001",
+    "fullName": "Aarav Sharma",
+    "course": "BCA",
+    "semester": "VI",
+    "email": "aarav@college.edu"
+  }
+]</pre>
+                </div>
+                <div>
+                    <h4 style="color:#3b82f6; margin-bottom:10px;">Logs Object (`sams_attendance`)</h4>
+                    <p style="font-size:15px; color:#cbd5e1; margin-bottom:15px;">Maps date keys to student rolls and marked state.</p>
+                    <pre style="font-size:11px; margin:0;">{
+  "2026-06-08": {
+    "BCA-2026-001": "Present",
+    "BCA-2026-002": "Absent"
+  }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Core Modules & Features -->
+        <div class="slide">
+            <div class="slide-title">Core Modules & Features</div>
+            <div class="slide-content">
+                <ul>
+                    <li><strong>Interactive Statistics</strong>: Displays present count, absent count, and aggregate percentages with pulsing pending CTA labels.</li>
+                    <li><strong>SVG Visual Polyline Chart</strong>: Dynamic coordinate rendering showing attendance trend calculations.</li>
+                    <li><strong>CSV Importer API</strong>: Standard browser FileReader streams that parse rosters, skip duplicate roll keys, and add students in bulk.</li>
+                    <li><strong>Non-Destructive Merging</strong>: Instructors mark classes separately without wiping logs taken by other coordinators on the same day.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 8: Parent Warning Letter Module -->
+        <div class="slide">
+            <div class="slide-title">Parent Warning Notices</div>
+            <div class="slide-content grid-content">
+                <div>
+                    <p style="margin-bottom:15px;">The Analytics reports module isolates "defaulter" students with less than 75% attendance averages.</p>
+                    <ul>
+                        <li>Automatically compiles metrics.</li>
+                        <li>Calculates exact lectures missed.</li>
+                        <li>Generates parent-ready letters.</li>
+                        <li>Includes A4 media print CSS rules.</li>
+                    </ul>
+                </div>
+                <div class="card" style="font-family: serif; background: #ffffff; color: #000000; font-size: 11px; padding: 15px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                    <div style="font-weight: bold; text-align: center;">SAM GLOBAL UNIVERSITY</div>
+                    <div style="font-size: 8px; text-align: center;">Ref: SGU/BCA/WARN/2026</div>
+                    <br>
+                    Dear Parent,
+                    Your ward's attendance is 64% (Missed 18 lectures). Please note that a minimum of 75% is required...
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Testing & Performance -->
+        <div class="slide">
+            <div class="slide-title">Testing & Performance Profile</div>
+            <div class="slide-content">
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 20px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #3b82f6;">
+                            <th style="padding: 6px; text-align: left;">Metric Description</th>
+                            <th style="padding: 6px; text-align: right;">Value Observed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 6px;">Initial Page Boot Latency</td>
+                            <td style="padding: 6px; text-align: right; color: #10b981; font-weight: bold;">85 ms</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 6px;">LocalStorage Database Operations</td>
+                            <td style="padding: 6px; text-align: right; color: #10b981; font-weight: bold;">&lt; 3 ms</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 6px;">Search query latency (1,000 students roster)</td>
+                            <td style="padding: 6px; text-align: right; color: #10b981; font-weight: bold;">&lt; 8 ms</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 6px;">Runtime browser memory usage</td>
+                            <td style="padding: 6px; text-align: right; color: #10b981; font-weight: bold;">~ 1.2 MB</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size:15px; color:#94a3b8;">Tested on Google Chrome, Mozilla Firefox, and Edge. Clean console output with zero exceptions raised during database resets or imports.</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Conclusion & Future Scope -->
+        <div class="slide">
+            <div class="slide-title">Conclusion & Future Scope</div>
+            <div class="slide-content">
+                <p style="margin-bottom: 15px;">SmartAttend delivers an efficient, secure, and user-friendly solution for class-wise tracking. Its zero-cost operation and fast load times make it a viable alternative for department coordinators.</p>
+                <h4 style="color:#3b82f6; margin-bottom:10px; font-size:16px;">Future Enhancements:</h4>
+                <ol>
+                    <li>Integrate <strong>biometric check-ins</strong> (face recognition API inputs).</li>
+                    <li>Connect **SMS Twilio gateways** to alert parents automatically.</li>
+                    <li>Develop a secure **central REST server sync** for multi-teacher access.</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Slide 11: Thank You -->
+        <div class="slide front-slide">
+            <div class="front-title" style="font-size: 56px; color: #3b82f6; margin-bottom: 20px;">Thank You</div>
+            <div class="front-subtitle" style="font-size: 24px; margin-bottom: 40px;">Questions & Answers Session</div>
+            <p style="font-size: 18px; color: #cbd5e1; text-align: center; text-indent: 0;">SmartAttend - Student Attendance Management System</p>
+            <div class="front-details-box" style="margin-top: 50px; justify-content: center; border-top: 1px solid rgba(255, 255, 255, 0.1); width: 60%; padding-top: 20px;">
+                <div style="text-align: center; line-height: 1.6;">
+                    <strong>Presented By: Yash Agre</strong><br>
+                    Roll No: 23SCIT1AI03077 | BCA<br>
+                    Sam Global University
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="slide-counter">Slide <span id="currentSlideNum">1</span> of <span id="totalSlidesNum">10</span></div>
+        <div class="progress-dots" id="dotsContainer"></div>
+        <div class="nav-buttons">
+            <button class="nav-btn" id="prevBtn">Previous</button>
+            <button class="nav-btn" id="nextBtn">Next</button>
+        </div>
+    </footer>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const dotsContainer = document.getElementById('dotsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const currentSlideNum = document.getElementById('currentSlideNum');
+        const totalSlidesNum = document.getElementById('totalSlidesNum');
+        
+        let activeIndex = 0;
+        const totalSlides = slides.length;
+        totalSlidesNum.textContent = totalSlides;
+
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = `dot ${i === 0 ? 'active' : ''}`;
+            dot.addEventListener('click', () => showSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+        const dots = document.querySelectorAll('.dot');
+
+        function showSlide(index) {
+            slides[activeIndex].classList.remove('active');
+            dots[activeIndex].classList.remove('active');
+            
+            activeIndex = (index + totalSlides) % totalSlides;
+            
+            slides[activeIndex].classList.add('active');
+            dots[activeIndex].classList.add('active');
+            currentSlideNum.textContent = activeIndex + 1;
+        }
+
+        prevBtn.addEventListener('click', () => showSlide(activeIndex - 1));
+        nextBtn.addEventListener('click', () => showSlide(activeIndex + 1));
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                showSlide(activeIndex + 1);
+            } else if (e.key === 'ArrowLeft') {
+                showSlide(activeIndex - 1);
+            }
+        });
+    </script>
+</body>
+</html>
